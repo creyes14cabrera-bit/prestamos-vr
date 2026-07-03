@@ -1,0 +1,1653 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PRÉSTAMOS VR | Valerie & Camilo</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    /* ========== PRÉSTAMOS VR · DISEÑO SOBRIO Y RESPONSIVE ========== */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap');
+    :root {
+      --p: #1f2937;
+      --p2: #374151;
+      --p3: #111827;
+      --accent: #0f766e;
+      --g: #15803d;
+      --w: #b45309;
+      --r: #b91c1c;
+      --b: #1d4ed8;
+      --bg: #f3f4f6;
+      --surface: #ffffff;
+      --surface2: #f9fafb;
+      --soft: #eef2f7;
+      --border: #e5e7eb;
+      --border2: #d1d5db;
+      --text: #111827;
+      --muted: #6b7280;
+      --sb-w: 272px;
+      --hdr-h: 66px;
+      --sh: 0 1px 2px rgba(17, 24, 39, .06), 0 8px 24px rgba(17, 24, 39, .06);
+      --sh-lg: 0 18px 50px rgba(17, 24, 39, .16);
+      --radius: 16px;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+      font-size: 15px;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(circle at top left, rgba(15, 118, 110, .08), transparent 32%),
+        radial-gradient(circle at bottom right, rgba(17, 24, 39, .07), transparent 30%);
+      z-index: -1;
+    }
+
+    /* Login */
+    .login-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #111827, #1f2937 55%, #0f766e);
+      padding: 18px;
+    }
+    .login-card {
+      background: rgba(255, 255, 255, .96);
+      border: 1px solid rgba(255, 255, 255, .35);
+      border-radius: 26px;
+      box-shadow: var(--sh-lg);
+      width: 100%;
+      max-width: 430px;
+      padding: 42px 34px;
+      animation: fadeUp .35s ease;
+      backdrop-filter: blur(16px);
+    }
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(22px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .login-logo {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .login-logo .ico-wrap {
+      width: 76px;
+      height: 76px;
+      background: linear-gradient(135deg, #111827, #0f766e);
+      border-radius: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+      box-shadow: 0 18px 34px rgba(15, 118, 110, .28);
+    }
+    .login-logo .ico-wrap i {
+      font-size: 2rem;
+      color: #fff;
+    }
+    .login-logo h1 {
+      font-size: 1.9rem;
+      font-weight: 800;
+      letter-spacing: -.06em;
+      color: #111827;
+    }
+    .login-logo p {
+      color: var(--muted);
+      font-size: .9rem;
+      margin-top: 6px;
+      line-height: 1.45;
+    }
+    .fld,
+    .fg {
+      margin-bottom: 16px;
+    }
+    .fld label,
+    .fg label {
+      display: block;
+      font-weight: 700;
+      font-size: .8rem;
+      margin-bottom: 7px;
+      color: #374151;
+    }
+    .fld input,
+    .inp,
+    .fg select,
+    .fg textarea,
+    .search-bar select {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      font-size: .92rem;
+      transition: .18s;
+      background: #fff;
+      color: var(--text);
+      outline: none;
+    }
+    .fld input:focus,
+    .inp:focus,
+    .fg select:focus,
+    .fg textarea:focus,
+    .search-bar select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px rgba(15, 118, 110, .10);
+    }
+    .fg textarea {
+      resize: vertical;
+      min-height: 82px;
+    }
+    .fnote {
+      font-size: .74rem;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10.5px 17px;
+      border: 1px solid transparent;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: .84rem;
+      cursor: pointer;
+      transition: .18s;
+      white-space: nowrap;
+      text-decoration: none;
+      line-height: 1.1;
+    }
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+    .btn-primary {
+      background: #111827;
+      color: #fff;
+      box-shadow: 0 8px 18px rgba(17, 24, 39, .18);
+    }
+    .btn-success {
+      background: #0f766e;
+      color: #fff;
+    }
+    .btn-danger {
+      background: #991b1b;
+      color: #fff;
+    }
+    .btn-warning {
+      background: #92400e;
+      color: #fff;
+    }
+    .btn-info {
+      background: #1f2937;
+      color: #fff;
+    }
+    .btn-secondary {
+      background: #4b5563;
+      color: #fff;
+    }
+    .btn-outline {
+      background: #fff;
+      border-color: var(--border2);
+      color: #374151;
+    }
+    .btn-outline:hover {
+      border-color: #111827;
+      color: #111827;
+      background: #f9fafb;
+    }
+    .btn-ghost {
+      background: transparent;
+      color: var(--muted);
+      padding: 8px 11px;
+    }
+    .btn-ghost:hover {
+      background: rgba(255, 255, 255, .08);
+      color: #fff;
+    }
+    .btn-sm {
+      padding: 9px 14px;
+      font-size: .8rem;
+    }
+    .btn-xs {
+      padding: 6px 10px;
+      font-size: .75rem;
+    }
+    .btn-full {
+      width: 100%;
+    }
+
+    /* Dropdown */
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      top: calc(100% + 6px);
+      right: 0;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      min-width: 200px;
+      box-shadow: var(--sh-lg);
+      z-index: 300;
+      padding: 6px 0;
+      overflow: hidden;
+    }
+    .dropdown-menu.open {
+      display: block;
+    }
+    .dropdown-menu a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 16px;
+      font-size: .84rem;
+      color: var(--text);
+      text-decoration: none;
+      transition: .12s;
+      cursor: pointer;
+      border: none;
+      background: none;
+      width: 100%;
+      text-align: left;
+      font-weight: 500;
+    }
+    .dropdown-menu a:hover {
+      background: #f3f4f6;
+    }
+    .dropdown-menu a i {
+      width: 18px;
+      color: var(--muted);
+    }
+
+    /* App layout */
+    .app {
+      display: none;
+      min-height: 100vh;
+    }
+    .overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(17, 24, 39, .48);
+      z-index: 150;
+      backdrop-filter: blur(2px);
+    }
+    .sidebar {
+      width: var(--sb-w);
+      background: #111827;
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      overflow-y: auto;
+      z-index: 200;
+      transition: transform .28s ease;
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid rgba(255, 255, 255, .08);
+    }
+    .sb-head {
+      padding: 22px 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, .08);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .sb-logo {
+      width: 42px;
+      height: 42px;
+      background: linear-gradient(135deg, #0f766e, #134e4a);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 12px 25px rgba(15, 118, 110, .25);
+    }
+    .sb-logo i {
+      color: #fff;
+      font-size: 1rem;
+    }
+    .sb-brand {
+      color: #fff;
+      font-weight: 800;
+      font-size: .98rem;
+      line-height: 1.25;
+      letter-spacing: -.02em;
+    }
+    .sb-brand small {
+      color: rgba(255, 255, 255, .55);
+      font-weight: 500;
+      font-size: .69rem;
+      display: block;
+      margin-top: 2px;
+    }
+    .sb-nav {
+      list-style: none;
+      padding: 12px 10px;
+      flex: 1;
+    }
+    .sb-nav li {
+      margin-bottom: 4px;
+    }
+    .sb-nav a {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 13px;
+      border-radius: 12px;
+      color: rgba(255, 255, 255, .66);
+      text-decoration: none;
+      transition: .18s;
+      font-size: .88rem;
+      font-weight: 650;
+    }
+    .sb-nav a:hover {
+      background: rgba(255, 255, 255, .07);
+      color: #fff;
+    }
+    .sb-nav a.active {
+      background: rgba(15, 118, 110, .20);
+      color: #fff;
+      box-shadow: inset 3px 0 0 #14b8a6;
+    }
+    .sb-nav a i {
+      width: 18px;
+      text-align: center;
+      font-size: .95rem;
+    }
+    .sb-badge {
+      margin-left: auto;
+      background: #334155;
+      color: #fff;
+      font-size: .68rem;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 999px;
+      min-width: 20px;
+      text-align: center;
+    }
+    .sb-foot {
+      padding: 12px 10px;
+      border-top: 1px solid rgba(255, 255, 255, .08);
+    }
+    .sb-user {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, .04);
+    }
+    .sb-ava {
+      width: 36px;
+      height: 36px;
+      background: #0f766e;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 800;
+      font-size: .78rem;
+      flex-shrink: 0;
+    }
+    .sb-info {
+      flex: 1;
+      min-width: 0;
+    }
+    .sb-info .name {
+      font-weight: 700;
+      font-size: .84rem;
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .sb-info .role {
+      font-size: .72rem;
+      color: rgba(255, 255, 255, .5);
+    }
+
+    .hdr {
+      height: var(--hdr-h);
+      background: rgba(255, 255, 255, .88);
+      backdrop-filter: blur(14px);
+      position: fixed;
+      top: 0;
+      left: var(--sb-w);
+      right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      border-bottom: 1px solid rgba(229, 231, 235, .9);
+      box-shadow: 0 1px 12px rgba(17, 24, 39, .04);
+    }
+    .hdr-l {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .menu-tog {
+      display: none;
+      background: #fff;
+      border: 1px solid var(--border);
+      color: #111827;
+      font-size: 1.1rem;
+      cursor: pointer;
+      padding: 9px 11px;
+      border-radius: 12px;
+    }
+    .pg-title {
+      font-size: 1.2rem;
+      font-weight: 800;
+      letter-spacing: -.03em;
+    }
+    .hdr-r {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .date-chip {
+      background: #fff;
+      padding: 7px 13px;
+      border-radius: 999px;
+      font-size: .8rem;
+      color: #4b5563;
+      font-weight: 650;
+      border: 1px solid var(--border);
+    }
+    .notif-btn {
+      position: relative;
+      background: #fff;
+      border: 1px solid var(--border);
+      color: #4b5563;
+      font-size: 1rem;
+      cursor: pointer;
+      padding: 9px 11px;
+      border-radius: 12px;
+      transition: .18s;
+    }
+    .notif-btn:hover {
+      color: #111827;
+      border-color: #9ca3af;
+    }
+    .notif-dot {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      width: 8px;
+      height: 8px;
+      background: var(--r);
+      border-radius: 50%;
+      border: 2px solid #fff;
+      display: none;
+    }
+    .main {
+      margin-left: var(--sb-w);
+      padding-top: var(--hdr-h);
+      min-height: 100vh;
+    }
+    .content {
+      padding: 24px;
+      max-width: 1450px;
+    }
+    .module {
+      display: none;
+      animation: fadeIn .25s ease;
+    }
+    .module.active {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(7px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Ocultar Embargos */
+    a[data-mod="embargos"],
+    #mod-embargos {
+      display: none !important;
+    }
+
+    .mod-hdr {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .mod-hdr h2 {
+      font-size: 1.36rem;
+      font-weight: 850;
+      letter-spacing: -.04em;
+    }
+    .mod-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .card {
+      background: rgba(255, 255, 255, .95);
+      border-radius: var(--radius);
+      box-shadow: var(--sh);
+      border: 1px solid var(--border);
+      padding: 18px;
+      margin-bottom: 18px;
+    }
+    .card-hdr {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .card-title {
+      font-weight: 800;
+      font-size: .92rem;
+      color: #1f2937;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(205px, 1fr));
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+    .stat {
+      background: #fff;
+      border-radius: 18px;
+      padding: 18px;
+      border: 1px solid var(--border);
+      box-shadow: var(--sh);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      transition: .18s;
+      min-width: 0;
+    }
+    .stat:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 32px rgba(17, 24, 39, .10);
+    }
+    .stat-lbl {
+      font-size: .72rem;
+      font-weight: 850;
+      color: #6b7280;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      margin-bottom: 7px;
+    }
+    .stat-val {
+      font-size: 1.42rem;
+      font-weight: 850;
+      font-family: 'JetBrains Mono', monospace;
+      line-height: 1.05;
+      word-break: break-word;
+      color: #111827;
+    }
+    .stat-ico {
+      width: 42px;
+      height: 42px;
+      border-radius: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+      background: #f3f4f6;
+      color: #374151;
+    }
+    .ico-p,
+    .ico-b,
+    .ico-w,
+    .ico-g,
+    .ico-r {
+      background: #f3f4f6;
+      color: #374151;
+    }
+
+    .dash-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+    .tbl-wrap {
+      overflow-x: auto;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: #fff;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 620px;
+      font-size: .84rem;
+    }
+    th {
+      background: #f9fafb;
+      color: #374151;
+      font-weight: 850;
+      padding: 12px 13px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      font-size: .72rem;
+      text-transform: uppercase;
+      letter-spacing: .055em;
+      white-space: nowrap;
+    }
+    td {
+      padding: 12px 13px;
+      border-bottom: 1px solid #f1f5f9;
+      vertical-align: middle;
+    }
+    tbody tr:last-child td {
+      border-bottom: none;
+    }
+    tbody tr:hover {
+      background: #f9fafb;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 9px;
+      border-radius: 999px;
+      font-size: .72rem;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+    .bg-g {
+      background: #dcfce7;
+      color: #166534;
+    }
+    .bg-r {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+    .bg-w {
+      background: #fef3c7;
+      color: #92400e;
+    }
+    .bg-b {
+      background: #dbeafe;
+      color: #1e40af;
+    }
+    .bg-p {
+      background: #e5e7eb;
+      color: #111827;
+    }
+    .bg-gray {
+      background: #f3f4f6;
+      color: #4b5563;
+    }
+    .gb {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-size: .71rem;
+      font-weight: 750;
+      margin: 1px;
+      background: #f3f4f6;
+      color: #374151;
+    }
+    .gb-tarjeta,
+    .gb-letra,
+    .gb-hipoteca,
+    .gb-prendario,
+    .gb-personal {
+      background: #f3f4f6;
+      color: #374151;
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 18px;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+    .tab {
+      padding: 10px 15px;
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      font-weight: 750;
+      font-size: .84rem;
+      color: var(--muted);
+      cursor: pointer;
+      transition: .18s;
+      border-radius: 10px 10px 0 0;
+    }
+    .tab:hover {
+      color: #111827;
+      background: #f9fafb;
+    }
+    .tab.active {
+      color: #111827;
+      border-bottom-color: #111827;
+      background: #fff;
+    }
+    .tab-panel {
+      display: none;
+    }
+    .tab-panel.active {
+      display: block;
+    }
+    .frow {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .frow.r3 {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+    .frow.r1 {
+      grid-template-columns: 1fr;
+    }
+    .search-bar {
+      display: flex;
+      gap: 9px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+    .search-bar .inp {
+      flex: 1;
+      min-width: 220px;
+    }
+    .empty {
+      text-align: center;
+      padding: 44px 20px;
+      color: var(--muted);
+    }
+    .empty i {
+      font-size: 2.7rem;
+      opacity: .22;
+      margin-bottom: 14px;
+      display: block;
+    }
+    .sep {
+      height: 1px;
+      background: var(--border);
+      margin: 14px 0;
+    }
+    .mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .text-p {
+      color: #111827;
+    }
+    .text-g {
+      color: var(--g);
+    }
+    .text-r {
+      color: var(--r);
+    }
+    .text-w {
+      color: var(--w);
+    }
+    .text-m {
+      color: var(--muted);
+      font-size: .82rem;
+    }
+    .fw7 {
+      font-weight: 750;
+    }
+    .mt8 {
+      margin-top: 8px;
+    }
+    .mb0 {
+      margin-bottom: 0;
+    }
+
+    /* Modales */
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(17, 24, 39, .62);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 14px;
+      backdrop-filter: blur(3px);
+    }
+    .modal.open {
+      display: flex;
+    }
+    .mbox {
+      background: #fff;
+      border-radius: 22px;
+      width: 100%;
+      max-width: 680px;
+      max-height: 94vh;
+      overflow-y: auto;
+      box-shadow: var(--sh-lg);
+      animation: fadeUp .25s ease;
+      border: 1px solid rgba(255, 255, 255, .4);
+    }
+    .mbox.wide {
+      max-width: 900px;
+    }
+    .mhdr {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 22px;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      background: #fff;
+      z-index: 1;
+      border-radius: 22px 22px 0 0;
+    }
+    .mhdr h2 {
+      font-size: 1.05rem;
+      font-weight: 850;
+      letter-spacing: -.03em;
+    }
+    .mclose {
+      background: #f9fafb;
+      border: 1px solid var(--border);
+      font-size: 1.25rem;
+      color: var(--muted);
+      cursor: pointer;
+      line-height: 1;
+      padding: 5px 10px;
+      border-radius: 10px;
+      transition: .18s;
+    }
+    .mclose:hover {
+      background: #fee2e2;
+      color: var(--r);
+      border-color: #fecaca;
+    }
+    .mbody {
+      padding: 22px;
+    }
+    .mfoot {
+      padding: 14px 22px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: flex-end;
+      gap: 9px;
+      background: #f9fafb;
+      border-radius: 0 0 22px 22px;
+      flex-wrap: wrap;
+    }
+
+    /* Garantías */
+    .gar-checks {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .gar-ck {
+      display: none;
+    }
+    .gar-lbl {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 13px;
+      border-radius: 999px;
+      border: 1.5px solid var(--border);
+      font-size: .82rem;
+      font-weight: 650;
+      cursor: pointer;
+      transition: .18s;
+      color: #4b5563;
+      background: #fff;
+    }
+    .gar-lbl:hover {
+      border-color: #9ca3af;
+      color: #111827;
+    }
+    .gar-ck:checked+.gar-lbl {
+      border-color: #111827;
+      background: #111827;
+      color: #fff;
+    }
+    .gar-det {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 10px;
+      background: #f9fafb;
+      display: none;
+    }
+    .gar-det.show {
+      display: block;
+    }
+    .gar-det h5 {
+      font-size: .83rem;
+      font-weight: 850;
+      color: #111827;
+      margin-bottom: 10px;
+    }
+
+    .res-box,
+    .qprev {
+      background: #f9fafb;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 15px;
+      margin-top: 10px;
+    }
+    .res-box h4,
+    .qprev h5 {
+      font-size: .78rem;
+      font-weight: 850;
+      color: #111827;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+    .res-row,
+    .qrow {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 7px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: .85rem;
+      gap: 10px;
+    }
+    .res-row:last-child,
+    .qrow:last-child {
+      border-bottom: none;
+    }
+    .rl,
+    .ql {
+      color: var(--muted);
+      font-weight: 550;
+    }
+    .rv,
+    .qv {
+      font-weight: 800;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .qv.qi {
+      color: var(--w);
+    }
+    .qv.qc {
+      color: var(--g);
+    }
+    .qv.qt {
+      color: #111827;
+      font-size: .95rem;
+    }
+
+    .abono-box {
+      background: #f0fdfa;
+      border: 1px solid #ccfbf1;
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 14px;
+      display: none;
+    }
+    .abono-box label {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      cursor: pointer;
+      font-weight: 750;
+      font-size: .87rem;
+      color: #0f766e;
+    }
+    .abono-box input[type=checkbox] {
+      width: 17px;
+      height: 17px;
+      accent-color: #0f766e;
+      cursor: pointer;
+    }
+    .abono-detail {
+      display: none;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid #ccfbf1;
+    }
+    .abono-detail.show {
+      display: block;
+    }
+
+    .alert {
+      padding: 12px 14px;
+      border-radius: 13px;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      font-size: .85rem;
+      border: 1px solid var(--border);
+      background: #fff;
+    }
+    .al-r {
+      background: #fef2f2;
+      border-color: #fecaca;
+      color: #991b1b;
+    }
+    .al-g {
+      background: #f0fdf4;
+      border-color: #bbf7d0;
+      color: #166534;
+    }
+    .al-w {
+      background: #fffbeb;
+      border-color: #fde68a;
+      color: #92400e;
+    }
+    .al-b {
+      background: #eff6ff;
+      border-color: #bfdbfe;
+      color: #1e40af;
+    }
+    .al-p {
+      background: #f9fafb;
+      border-color: #d1d5db;
+      color: #111827;
+    }
+
+    .int-pend-box {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: 14px;
+      padding: 12px 15px;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .int-pend-box .ipb-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .int-pend-box .ipb-ico {
+      width: 36px;
+      height: 36px;
+      background: #fef3c7;
+      border-radius: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #92400e;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+    .int-pend-box .ipb-label {
+      font-size: .75rem;
+      color: #92400e;
+      font-weight: 850;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      display: block;
+    }
+    .int-pend-box .ipb-amount {
+      font-size: 1.16rem;
+      font-weight: 850;
+      font-family: 'JetBrains Mono', monospace;
+      color: #92400e;
+    }
+
+    .action-menu {
+      position: relative;
+      display: inline-block;
+    }
+    .action-menu .dots {
+      background: none;
+      border: none;
+      font-size: 1.3rem;
+      padding: 4px 6px;
+      cursor: pointer;
+      border-radius: 8px;
+      line-height: 1;
+      color: var(--muted);
+    }
+    .action-menu .dots:hover {
+      background: #f3f4f6;
+      color: #111827;
+    }
+    .action-menu .dropdown-menu {
+      min-width: 150px;
+      right: 0;
+    }
+
+    /* Responsive */
+    @media(max-width:1024px) {
+      .sidebar {
+        transform: translateX(-100%);
+      }
+      .sidebar.open {
+        transform: translateX(0);
+      }
+      .hdr {
+        left: 0;
+      }
+      .main {
+        margin-left: 0 !important;
+      }
+      .menu-tog {
+        display: block;
+      }
+      .overlay.open {
+        display: block;
+      }
+      .content {
+        max-width: none;
+      }
+    }
+    @media(max-width:768px) {
+      :root {
+        --hdr-h: 62px;
+      }
+      .frow,
+      .frow.r3 {
+        grid-template-columns: 1fr;
+      }
+      .stats-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .dash-grid {
+        grid-template-columns: 1fr;
+      }
+      .mod-hdr {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .mod-actions {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+      }
+      .mod-actions .btn {
+        width: 100%;
+      }
+      .content {
+        padding: 14px;
+      }
+      .card {
+        padding: 15px;
+        border-radius: 16px;
+      }
+      .mbox {
+        max-height: 98vh;
+        margin: 3px;
+      }
+      .hdr {
+        padding: 0 14px;
+      }
+      .pg-title {
+        font-size: 1.05rem;
+      }
+      .login-card {
+        padding: 34px 24px;
+      }
+      .mfoot {
+        justify-content: stretch;
+      }
+      .mfoot .btn {
+        flex: 1;
+      }
+      .search-bar {
+        display: grid;
+        grid-template-columns: 1fr;
+      }
+      .search-bar .inp {
+        min-width: 0;
+      }
+    }
+    @media(max-width:520px) {
+      body {
+        font-size: 14px;
+      }
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+      .hdr-r .date-chip {
+        display: none;
+      }
+      .hdr {
+        gap: 8px;
+      }
+      .mbody {
+        padding: 15px;
+      }
+      .mfoot {
+        padding: 12px 15px;
+      }
+      .mod-actions {
+        grid-template-columns: 1fr;
+      }
+      .btn {
+        white-space: normal;
+      }
+      .login-logo h1 {
+        font-size: 1.65rem;
+      }
+      .stat-val {
+        font-size: 1.3rem;
+      }
+      table {
+        min-width: 720px;
+      }
+      .tabs {
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        padding-bottom: 2px;
+      }
+      .tab {
+        white-space: nowrap;
+      }
+      .int-pend-box {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+      .res-row,
+      .qrow {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========== LOGIN ========== -->
+  <div class="login-wrap" id="login-wrap">
+    <div class="login-card">
+      <div class="login-logo">
+        <div class="ico-wrap"><i class="fas fa-hand-holding-usd"></i></div>
+        <h1>PRÉSTAMOS VR</h1>
+        <p>Sistema de préstamos personalizado</p>
+      </div>
+      <form id="login-form">
+        <div class="fld"><label>Usuario</label><input type="text" id="u-user" value="admi" autocomplete="username" /></div>
+        <div class="fld"><label>Contraseña</label><input type="password" id="u-pass" value="12345" autocomplete="current-password" /></div>
+        <button type="submit" class="btn btn-primary btn-full" style="padding:14px;margin-top:4px"><i class="fas fa-sign-in-alt"></i> Ingresar</button>
+      </form>
+      <p style="text-align:center;margin-top:16px;font-size:.78rem;color:var(--muted)">Usuario: <b>admi</b> &nbsp;|&nbsp; Contraseña: <b>12345</b></p>
+    </div>
+  </div>
+
+  <!-- ========== APP ========== -->
+  <div class="app" id="app">
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sb-head">
+        <div class="sb-logo"><i class="fas fa-hand-holding-usd"></i></div>
+        <div class="sb-brand">PRÉSTAMOS VR<small>Valerie Barros & Camilo Reyes</small></div>
+      </div>
+      <ul class="sb-nav">
+        <li><a href="#" data-mod="dashboard" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+        <li><a href="#" data-mod="clientes"><i class="fas fa-users"></i> Clientes <span class="sb-badge" id="cnt-cli">0</span></a></li>
+        <li><a href="#" data-mod="prestamos"><i class="fas fa-file-invoice-dollar"></i> Préstamos <span class="sb-badge" id="cnt-pre">0</span></a></li>
+        <li><a href="#" data-mod="garantias"><i class="fas fa-shield-alt"></i> Garantías</a></li>
+        <li><a href="#" data-mod="cobranzas"><i class="fas fa-cash-register"></i> Cobranzas <span class="sb-badge" id="cnt-cob">0</span></a></li>
+        <li><a href="#" data-mod="reportes"><i class="fas fa-chart-bar"></i> Reportes</a></li>
+        <li><a href="#" data-mod="auditoria"><i class="fas fa-clipboard-list"></i> Auditoría</a></li>
+        <li><a href="#" data-mod="fondeo"><i class="fas fa-handshake"></i> Fondeo <span class="sb-badge" id="cnt-fon">0</span></a></li>
+        <li><a href="#" data-mod="configuracion"><i class="fas fa-cog"></i> Configuración</a></li>
+      </ul>
+      <div class="sb-foot">
+        <div class="sb-user">
+          <div class="sb-ava">VR</div>
+          <div class="sb-info"><div class="name">Valerie & Camilo</div><div class="role">Administración</div></div>
+          <button class="btn btn-ghost" id="btn-logout" title="Salir" style="color:rgba(255,255,255,.35);padding:6px 8px"><i class="fas fa-sign-out-alt"></i></button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Header -->
+    <header class="hdr">
+      <div class="hdr-l">
+        <button class="menu-tog" id="menu-tog"><i class="fas fa-bars"></i></button>
+        <span class="pg-title" id="pg-title">Dashboard</span>
+      </div>
+      <div class="hdr-r">
+        <div style="display:flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--border);border-radius:999px;padding:4px 12px 4px 16px">
+          <i class="fas fa-search text-m" style="font-size:.75rem"></i>
+          <input type="text" id="global-search" placeholder="Buscar..." style="border:none;outline:none;font-size:.8rem;padding:6px 0;width:140px;background:transparent" />
+        </div>
+        <span class="date-chip" id="hdr-date"></span>
+        <button class="notif-btn" id="notif-btn"><i class="fas fa-bell"></i><span class="notif-dot" id="notif-dot"></span></button>
+      </div>
+    </header>
+
+    <!-- Main content -->
+    <main class="main"><div class="content">
+
+      <!-- DASHBOARD -->
+      <div class="module active" id="mod-dashboard">
+        <div class="mod-hdr">
+          <h2>Resumen General</h2>
+          <div class="mod-actions">
+            <div class="dropdown" id="dash-dropdown">
+              <button class="btn btn-primary btn-sm" id="dash-menu-btn"><i class="fas fa-cog"></i> Acciones ▾</button>
+              <div class="dropdown-menu" id="dash-menu">
+                <a onclick="exportToExcel()"><i class="fas fa-file-excel"></i> Exportar Excel</a>
+                <a onclick="document.getElementById('file-excel').click()"><i class="fas fa-upload"></i> Importar Excel</a>
+                <a onclick="document.getElementById('file-json').click()"><i class="fas fa-file-import"></i> Importar JSON</a>
+                <a onclick="abrirCapital()"><i class="fas fa-coins"></i> Capital</a>
+                <a onclick="upd()"><i class="fas fa-sync"></i> Actualizar</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="stats-grid">
+          <div class="stat"><div><div class="stat-lbl">Capital Propio</div><div class="stat-val mono" id="d-cappropio">$0</div></div><div class="stat-ico ico-p"><i class="fas fa-coins"></i></div></div>
+          <div class="stat"><div><div class="stat-lbl">Capital Externo</div><div class="stat-val mono" id="d-capext">$0</div></div><div class="stat-ico ico-b"><i class="fas fa-handshake"></i></div></div>
+          <div class="stat"><div><div class="stat-lbl">Ganancia Neta</div><div class="stat-val mono" id="d-ganancia_neta">$0</div></div><div class="stat-ico ico-g"><i class="fas fa-chart-line"></i></div></div>
+          <div class="stat"><div><div class="stat-lbl">Capital Total</div><div class="stat-val mono" id="d-captotal">$0</div></div><div class="stat-ico ico-b"><i class="fas fa-university"></i></div></div>
+          <div class="stat"><div><div class="stat-lbl">Capital Disponible</div><div class="stat-val mono" id="d-capdisp">$0</div></div><div class="stat-ico ico-g"><i class="fas fa-wallet"></i></div></div>
+          <div class="stat"><div><div class="stat-lbl">Capital en Calle</div><div class="stat-val mono" id="d-calle">$0</div></div><div class="stat-ico ico-w"><i class="fas fa-road"></i></div></div>
+          <div class="stat"><div><div class="stat-lbl">Total Prestado</div><div class="stat-val mono" id="d-prestado">$0</div></div><div class="stat-ico ico-p"><i class="fas fa-hand-holding-usd"></i></div></div>
+          <div class="stat"><div><div class="stat-lbl">Int. Pendientes Total</div><div class="stat-val mono" id="d-intpend">$0</div></div><div class="stat-ico ico-w"><i class="fas fa-exclamation-circle"></i></div></div>
+          <div class="stat"><div><div class="stat-lbl">Créditos Activos</div><div class="stat-val mono" id="d-act">0</div></div><div class="stat-ico ico-g"><i class="fas fa-file-invoice"></i></div></div>
+        </div>
+        <div class="dash-grid">
+          <div class="card">
+            <input type="file" id="file-excel" accept=".xlsx, .xls, .csv" style="display:none" />
+            <input type="file" id="file-json" accept=".json" style="display:none" />
+            <div class="card-hdr"><span class="card-title">Garantías por Tipo</span></div>
+            <div style="height:270px;position:relative"><canvas id="chart-gar"></canvas></div>
+          </div>
+          <div class="card">
+            <div class="card-hdr"><span class="card-title">Vencimientos Próximos (7 días)</span></div>
+            <div class="tbl-wrap"><table id="tbl-venc"><thead><tr><th>Cliente</th><th>Vence</th><th>Monto</th></tr></thead><tbody></tbody></table></div>
+          </div>
+        </div>
+        <div class="card"><div class="card-hdr"><span class="card-title">Alertas</span></div><div id="alertas"></div></div>
+      </div>
+
+      <!-- CLIENTES -->
+      <div class="module" id="mod-clientes">
+        <div class="mod-hdr">
+          <h2>Gestión de Clientes</h2>
+          <div class="mod-actions">
+            <button class="btn btn-primary btn-sm" id="btn-add-cli"><i class="fas fa-plus"></i> Nuevo Cliente</button>
+            <button class="btn btn-success btn-sm" id="btn-export-cli"><i class="fas fa-download"></i> PDF</button>
+          </div>
+        </div>
+        <div class="search-bar">
+          <input type="text" class="inp" id="src-cli" placeholder="Buscar nombre o cédula..." />
+          <select id="flt-cli"><option value="">Todos</option><option value="activo">Activos</option><option value="moroso">Morosos</option></select>
+        </div>
+        <div class="card mb0"><div class="tbl-wrap"><table id="tbl-clientes"><thead><tr><th>Cliente</th><th>Contacto</th><th>Créditos</th><th>Garantías</th><th>Saldo Pend.</th><th>Int. Pendientes</th><th>Estado</th><th>Acciones</th></tr></thead><tbody></tbody></table></div></div>
+      </div>
+
+      <!-- PRÉSTAMOS -->
+      <div class="module" id="mod-prestamos">
+        <div class="mod-hdr">
+          <h2>Gestión de Préstamos</h2>
+          <div class="mod-actions">
+            <button class="btn btn-primary btn-sm" id="btn-add-pre"><i class="fas fa-plus"></i> Nuevo Crédito</button>
+            <button class="btn btn-outline btn-sm" id="btn-simular"><i class="fas fa-calculator"></i> Simular</button>
+          </div>
+        </div>
+        <div class="stats-grid">
+          <div class="stat"><div><div class="stat-lbl">Total Colocado</div><div class="stat-val mono" id="p-total">$0</div></div><div class="stat-ico ico-p"><i class="fas fa-hand-holding-usd"></i></div></div>
+          <div class="stat"><div><div class="stat-lbl">Saldo Vigente</div><div class="stat-val mono" id="p-saldo">$0</div></div><div class="stat-ico ico-b"><i class="fas fa-wallet"></i></div></div>
+          <div class="stat"><div><div class="stat-lbl">En Mora</div><div class="stat-val mono" id="p-mora">$0</div></div><div class="stat-ico ico-r"><i class="fas fa-exclamation-circle"></i></div></div>
+          <div class="stat"><div><div class="stat-lbl">Int. Promedio</div><div class="stat-val mono" id="p-prom">0%</div></div><div class="stat-ico ico-g"><i class="fas fa-percentage"></i></div></div>
+        </div>
+        <div class="tabs" id="tabs-prestamos">
+          <button class="tab active" data-tab="tp-todos">Todos</button>
+          <button class="tab" data-tab="tp-activos">Activos</button>
+          <button class="tab" data-tab="tp-mora">En Mora</button>
+          <button class="tab" data-tab="tp-pagados">Pagados</button>
+        </div>
+        <div class="tab-panel active card mb0" id="tp-todos"><div class="tbl-wrap"><table id="tbl-pre-todos"><thead><tr><th>#</th><th>Cliente</th><th>Monto</th><th>Garantías</th><th>Interés</th><th>Frecuencia</th><th>Meses</th><th>Saldo</th><th>Int. Pend.</th><th>Estado</th><th>Acciones</th></tr></thead><tbody></tbody></table></div></div>
+        <div class="tab-panel card mb0" id="tp-activos"><div class="tbl-wrap"><table id="tbl-pre-act"><thead><tr><th>#</th><th>Cliente</th><th>Monto</th><th>Garantías</th><th>Interés</th><th>Frecuencia</th><th>Meses</th><th>Saldo</th><th>Int. Pend.</th><th>Estado</th><th>Acciones</th></tr></thead><tbody></tbody></table></div></div>
+        <div class="tab-panel card mb0" id="tp-mora"><div class="tbl-wrap"><table id="tbl-pre-mora"><thead><tr><th>#</th><th>Cliente</th><th>Monto</th><th>Garantías</th><th>Interés</th><th>Frecuencia</th><th>Meses</th><th>Saldo</th><th>Int. Pend.</th><th>Estado</th><th>Acciones</th></tr></thead><tbody></tbody></table></div></div>
+        <div class="tab-panel card mb0" id="tp-pagados"><div class="tbl-wrap"><table id="tbl-pre-pag"><thead><tr><th>#</th><th>Cliente</th><th>Monto</th><th>Garantías</th><th>Interés</th><th>Frecuencia</th><th>Meses</th><th>Saldo</th><th>Int. Pend.</th><th>Estado</th><th>Acciones</th></tr></thead><tbody></tbody></table></div></div>
+      </div>
+
+      <!-- GARANTÍAS -->
+      <div class="module" id="mod-garantias">
+        <div class="mod-hdr"><h2>Garantías Registradas</h2></div>
+        <div class="stats-grid">
+          <div class="stat"><div><div class="stat-lbl">Tarjeta Nómina</div><div class="stat-val" id="gs-tarjeta">0</div></div><div class="stat-ico ico-b"><i class="fas fa-credit-card"></i></div></div>
+          <div class="stat"><div><div class="stat-lbl">Letra de Cambio</div><div class="stat-val" id="gs-letra">0</div></div><div class="stat-ico ico-w"><i class="fas fa-file-signature"></i></div></div>
+          <div class="stat"><div><div class="stat-lbl">Hipoteca</div><div class="stat-val" id="gs-hipoteca">0</div></div><div class="stat-ico ico-p"><i class="fas fa-home"></i></div></div>
+          <div class="stat"><div><div class="stat-lbl">Prendario</div><div class="stat-val" id="gs-prendario">0</div></div><div class="stat-ico ico-r"><i class="fas fa-car"></i></div></div>
+          <div class="stat"><div><div class="stat-lbl">Personal</div><div class="stat-val" id="gs-personal">0</div></div><div class="stat-ico ico-g"><i class="fas fa-user-shield"></i></div></div>
+        </div>
+        <div class="card mb0"><div class="tbl-wrap"><table id="tbl-gars"><thead><tr><th>#Crédito</th><th>Cliente</th><th>Garantías</th><th>Detalles</th><th>Valor</th><th>Estado</th><th>Acciones</th></tr></thead><tbody></tbody></table></div></div>
+      </div>
+
+      <!-- COBRANZAS -->
+      <div class="module" id="mod-cobranzas">
+        <div class="mod-hdr">
+          <h2>Gestión de Cobranzas</h2>
+          <div class="mod-actions"><button class="btn btn-success btn-sm" id="btn-add-pago"><i class="fas fa-money-check-alt"></i> Registrar Pago</button></div>
+        </div>
+        <div class="stats-grid">
+          <div class="stat"><div><div class="stat-lbl">Por Cobrar Hoy</div><div class="stat-val mono" id="c-hoy">$0</div></div><div class="stat-ico ico-p"><i class="fas fa-calendar-day"></i></div></div>
+          <div class="stat"><div><div class="stat-lbl">Pagado Hoy</div><div class="stat-val mono" id="c-phoy">$0</div></div><div class="stat-ico ico-g"><i class="fas fa-check-circle"></i></div></div>
+          <div class="stat"><div><div class="stat-lbl">Pendientes Total</div><div class="stat-val mono" id="c-pend">0</div></div><div class="stat-ico ico-w"><i class="fas fa-clock"></i></div></div>
+          <div class="stat"><div><div class="stat-lbl">Cuotas en Mora</div><div class="stat-val mono" id="c-mora">0</div></div><div class="stat-ico ico-r"><i class="fas fa-exclamation-triangle"></i></div></div>
+          <div class="stat"><div><div class="stat-lbl">Períodos Impagos</div><div class="stat-val mono" id="c-impagos">0</div></div><div class="stat-ico ico-r"><i class="fas fa-calendar-times"></i></div></div>
+        </div>
+        <div class="tabs" id="tabs-cobranzas">
+          <button class="tab active" data-tab="tc-pend">Pendientes</button>
+          <button class="tab" data-tab="tc-venc">Vencidas/Mora</button>
+          <button class="tab" data-tab="tc-hist">Historial</button>
+        </div>
+        <div class="tab-panel active card mb0" id="tc-pend"><div class="tbl-wrap"><table id="tbl-cob-pend"><thead><tr><th>Cliente</th><th>#Crédito</th><th>Próxima Cuota</th><th>Vencimiento</th><th>Total</th><th>Capital</th><th>Interés</th><th>Int.Pend.</th><th>Acciones</th></tr></thead><tbody></tbody></table></div></div>
+        <div class="tab-panel card mb0" id="tc-venc"><div class="tbl-wrap"><table id="tbl-cob-venc"><thead><tr><th>Cliente</th><th>#Crédito</th><th>Cuota</th><th>Venció</th><th>Monto</th><th>Días Mora</th><th>Mora Extra</th><th>Int.Pend.</th><th>Acciones</th></tr></thead><tbody></tbody></table></div></div>
+        <div class="tab-panel card mb0" id="tc-hist"><div class="tbl-wrap"><table id="tbl-cob-hist"><thead><tr><th>Cliente</th><th>#Crédito</th><th>Cuota</th><th>Pagó</th><th>Total</th><th>Capital</th><th>Intereses</th><th>Int.Pend.Quedó</th><th>Método</th><th>Tipo</th><th>Acciones</th></tr></thead><tbody></tbody></table></div></div>
+      </div>
+
+      <!-- FONDEO -->
+      <div class="module" id="mod-fondeo">
+        <div class="mod-hdr">
+          <h2>Fondeo (Capital Externo)</h2>
+          <div class="mod-actions">
+            <button class="btn btn-primary btn-sm" id="btn-add-fuente"><i class="fas fa-plus"></i> Nueva Fuente</button>
+          </div>
+        </div>
+        <div class="stats-grid">
+          <div class="stat"><div><div class="stat-lbl">Total Fuentes</div><div class="stat-val" id="f-total">0</div></div><div class="stat-ico ico-p"><i class="fas fa-handshake"></i></div></div>
+          <div class="stat"><div><div class="stat-lbl">Saldo Externo</div><div class="stat-val mono" id="f-saldo">$0</div></div><div class="stat-ico ico-b"><i class="fas fa-dollar-sign"></i></div></div>
+          <div class="stat"><div><div class="stat-lbl">Intereses Pagados</div><div class="stat-val mono" id="f-intpag">$0</div></div><div class="stat-ico ico-w"><i class="fas fa-percentage"></i></div></div>
+          <div class="stat"><div><div class="stat-lbl">Ganancia Neta</div><div class="stat-val mono" id="f-ganancia">$0</div></div><div class="stat-ico ico-g"><i class="fas fa-chart-line"></i></div></div>
+        </div>
+        <div class="card mb0"><div class="tbl-wrap"><table id="tbl-fuentes"><thead><tr><th>Prestamista</th><th>Monto</th><th>Interés</th><th>Frecuencia</th><th>Fecha Inicio</th><th>Saldo</th><th>Int. Pagados</th><th>Estado</th><th>Acciones</th></tr></thead><tbody></tbody></table></div></div>
+      </div>
+
+      <!-- EMBARGOS (oculto) -->
+      <div class="module" id="mod-embargos"><div class="mod-hdr"><h2>Gestión de Embargos</h2></div></div>
+
+      <!-- REPORTES -->
+      <div class="module" id="mod-reportes">
+        <div class="mod-hdr">
+          <h2>Reportes</h2>
+          <div class="mod-actions"><button class="btn btn-success btn-sm" id="btn-rep-pdf"><i class="fas fa-file-pdf"></i> Exportar PDF</button></div>
+        </div>
+        <div class="card">
+          <div class="frow r3">
+            <div class="fg"><label>Desde</label><input type="date" class="inp" id="rep-desde" /></div>
+            <div class="fg"><label>Hasta</label><input type="date" class="inp" id="rep-hasta" /></div>
+            <div class="fg"><label>Tipo</label>
+              <select class="inp" id="rep-tipo">
+                <option value="general">General</option>
+                <option value="cobros">Cobros</option>
+                <option value="mora">Cartera Mora</option>
+                <option value="cuotas">Listado de cuotas</option>
+                <option value="intereses">Intereses Pendientes</option>
+              </select>
+            </div>
+          </div>
+          <button class="btn btn-primary btn-sm" id="btn-gen-rep"><i class="fas fa-search"></i> Generar</button>
+        </div>
+        <div id="rep-resultado"></div>
+      </div>
+
+      <!-- AUDITORÍA -->
+      <div class="module" id="mod-auditoria">
+        <div class="mod-hdr">
+          <h2>Auditoría del Sistema</h2>
+          <div class="mod-actions"><button class="btn btn-outline btn-sm" id="btn-clr-audit"><i class="fas fa-trash"></i> Limpiar</button></div>
+        </div>
+        <div class="card mb0"><div id="audit-log"></div></div>
+      </div>
+
+      <!-- CONFIGURACIÓN -->
+      <div class="module" id="mod-configuracion">
+        <div class="mod-hdr">
+          <h2>Configuración</h2>
+          <div class="mod-actions">
+            <button class="btn btn-success btn-sm" id="btn-save-cfg"><i class="fas fa-save"></i> Guardar</button>
+            <button class="btn btn-danger btn-sm" id="btn-reiniciar"><i class="fas fa-redo"></i> Reiniciar</button>
+          </div>
+        </div>
+        <div class="tabs" id="tabs-config">
+          <button class="tab active" data-tab="cfg-seg">Seguridad</button>
+          <button class="tab" data-tab="cfg-par">Parámetros</button>
+        </div>
+        <div class="tab-panel active" id="cfg-seg">
+          <div class="card">
+            <div class="card-hdr"><span class="card-title">Cambiar Contraseña</span></div>
+            <div class="frow">
+              <div class="fg"><label>Nueva Contraseña</label><input type="password" class="inp" id="cfg-p1" /></div>
+              <div class="fg"><label>Confirmar</label><input type="password" class="inp" id="cfg-p2" /></div>
+            </div>
+            <button class="btn btn-primary btn-sm" id="btn-ch-pass"><i class="fas fa-key"></i> Cambiar</button>
+          </div>
+        </div>
+        <div class="tab-panel" id="cfg-par">
+          <div class="card">
+            <div class="card-hdr"><span class="card-title">Parámetros Financieros</span></div>
+            <div class="frow r3">
+              <div class="fg"><label>Capital Base ($)</label><input type="number" class="inp" id="cfg-cap" value="0" /></div>
+              <div class="fg"><label>Interés Mensual Defecto (%)</label><input type="number" class="inp" id="cfg-int" value="10" step="0.1" /></div>
+              <div class="fg"><label>Días de Gracia</label><input type="number" class="inp" id="cfg-gracia" value="5" /></div>
+            </div>
+            <div class="frow r3">
+              <div class="fg"><label>Monto Mínimo ($)</label><input type="number" class="inp" id="cfg-min" value="50000" /></div>
+              <div class="fg"><label>Tasa Moratoria (%/mes)</label><input type="number" class="inp" id="cfg-mora" value="3" step="0.1" /></div>
+              <div class="fg"><label>Frecuencia Defecto</label><select class="inp" id="cfg-frec"><option value="quincenal">Quincenal</option><option value="mensual">Mensual</option><option value="semanal">Semanal</option><option value="diario">Diario</option></select></div>
+            </div>
+            <div class="sep"></div>
+            <div class="card-hdr"><span class="card-title">Estado del Capital</span></div>
+            <div class="frow r3">
+              <div class="stat" style="padding:14px"><div><div class="stat-lbl">Capital Base</div><div class="stat-val" style="font-size:1.1rem" id="cfg-capbase">$0</div></div></div>
+              <div class="stat" style="padding:14px"><div><div class="stat-lbl">Ganancias Acumuladas</div><div class="stat-val" style="font-size:1.1rem;color:var(--g)" id="cfg-ganancias">$0</div></div></div>
+              <div class="stat" style="padding:14px"><div><div class="stat-lbl">Capital Total</div><div class="stat-val" style="font-size:1.1rem;color:var(--b)" id="cfg-captotal">$0</div></div></div>
+            </div>
+            <div class="fnote">* El capital disponible se calcula automáticamente: Capital Total − Saldo de préstamos activos.</div>
+          </div>
+        </div>
+      </div>
+
+    </div></main>
+  </div>
+
+  <!-- ========== MODALES ========== -->
+  <!-- Capital -->
+  <div class="modal" id="m-capital"><div class="mbox" style="max-width:400px"><div class="mhdr"><h2><i class="fas fa-coins text-p"></i> Capital Inicial</h2><button class="mclose" data-m="m-capital">&times;</button></div><div class="mbody"><p class="text-m" style="margin-bottom:14px">Define el capital base de operación del negocio.</p><div class="fg"><label>Capital Base ($)</label><input type="number" class="inp" id="cap-val" min="0" placeholder="Ej: 50000000" /></div></div><div class="mfoot"><button class="btn btn-outline btn-sm" data-m="m-capital">Omitir</button><button class="btn btn-primary btn-sm" id="btn-sv-cap"><i class="fas fa-save"></i> Guardar</button></div></div></div>
+  <!-- Cliente -->
+  <div class="modal" id="m-cliente"><div class="mbox"><div class="mhdr"><h2 id="m-cli-title">Nuevo Cliente</h2><button class="mclose" data-m="m-cliente">&times;</button></div><div class="mbody"><form id="f-cliente" onsubmit="return false"><input type="hidden" id="cli-id" /><div class="frow"><div class="fg"><label>Nombre Completo *</label><input type="text" class="inp" id="cli-nombre" required /></div><div class="fg"><label>Cédula *</label><input type="text" class="inp" id="cli-cedula" required /></div></div><div class="frow"><div class="fg"><label>Teléfono *</label><input type="tel" class="inp" id="cli-tel" required /></div><div class="fg"><label>Email</label><input type="email" class="inp" id="cli-email" /></div></div><div class="frow"><div class="fg"><label>Dirección</label><input type="text" class="inp" id="cli-dir" /></div><div class="fg"><label>Empresa/Empleador</label><input type="text" class="inp" id="cli-emp" /></div></div><div class="fg"><label>Ingresos Mensuales ($)</label><input type="number" class="inp" id="cli-ing" min="0" /></div></form></div><div class="mfoot"><button class="btn btn-outline btn-sm" data-m="m-cliente">Cancelar</button><button class="btn btn-primary btn-sm" id="btn-sv-cli"><i class="fas fa-save"></i> Guardar</button></div></div></div>
+  <!-- Cliente Rápido -->
+  <div class="modal" id="m-cli-rap"><div class="mbox" style="max-width:440px"><div class="mhdr"><h2>Cliente Rápido</h2><button class="mclose" data-m="m-cli-rap">&times;</button></div><div class="mbody"><div class="alert al-w"><i class="fas fa-info-circle"></i> Datos mínimos. Puede completar el perfil después.</div><div class="fg"><label>Nombre Completo *</label><input type="text" class="inp" id="cr-nom" required /></div><div class="fg"><label>Cédula *</label><input type="text" class="inp" id="cr-ced" required /></div><div class="fg"><label>Teléfono *</label><input type="tel" class="inp" id="cr-tel" required /></div></div><div class="mfoot"><button class="btn btn-outline btn-sm" data-m="m-cli-rap">Cancelar</button><button class="btn btn-primary btn-sm" id="btn-sv-cr"><i class="fas fa-user-plus"></i> Crear y Usar</button></div></div></div>
+  <!-- Préstamo -->
+  <div class="modal" id="m-prestamo"><div class="mbox wide"><div class="mhdr"><h2>Nuevo Crédito</h2><button class="mclose" data-m="m-prestamo">&times;</button></div><div class="mbody"><form id="f-prestamo" onsubmit="return false"><div class="fg"><label>Cliente *</label><div style="display:flex;gap:8px"><div style="flex:1;position:relative"><input type="text" class="inp" id="pre-cli-src" placeholder="Buscar cliente..." list="dl-clis" autocomplete="off" /><datalist id="dl-clis"></datalist><input type="hidden" id="pre-cli-id" /></div><button type="button" class="btn btn-success btn-sm" id="btn-cli-rap" title="Crear cliente rápido"><i class="fas fa-user-plus"></i></button></div><div id="pre-cli-info" class="text-m mt8"></div></div>
+  <div class="fg"><label>Tipo de Crédito *</label><select class="inp" id="pre-tipo"><option value="rotativo">Rotativo (solo intereses, renovable)</option><option value="amortizable">Amortizable (plazo definido)</option></select></div>
+  <div id="div-amort" style="display:none"><div class="frow"><div class="fg"><label>Plazo (meses) *</label><input type="number" class="inp" id="pre-plazo" min="1" value="1" /></div><div class="fg"><label>N° Cuotas *<br /><small class="text-m">quincenal = meses × 2</small></label><input type="number" class="inp" id="pre-ncuotas" min="1" /></div></div></div>
+  <div class="frow"><div class="fg"><label>Monto ($) *</label><input type="number" class="inp" id="pre-monto" required min="1" placeholder="0" /></div><div class="fg"><label>Frecuencia *</label><select class="inp" id="pre-frec"><option value="diario">Diario</option><option value="semanal">Semanal</option><option value="quincenal" selected>Quincenal</option><option value="mensual">Mensual</option></select></div></div>
+  <div class="frow"><div class="fg"><label>Interés Mensual (%) *</label><input type="number" class="inp" id="pre-int" step="0.1" required placeholder="10" /></div><div class="fg"><label>Fecha Inicio *</label><input type="date" class="inp" id="pre-fecha" required /></div></div>
+  <div class="fg"><label>Fuente Externa (opcional)</label><select class="inp" id="pre-fuente"><option value="">Ninguna (capital propio)</option></select><div class="fnote">Selecciona una fuente de fondeo para calcular la ganancia neta automáticamente.</div></div>
+  <div class="abono-box" id="abono-box"><label><input type="checkbox" id="pre-tiene-abono" /><i class="fas fa-piggy-bank"></i> ¿El cliente abona a capital en cada 2ª quincena?</label><div class="abono-detail" id="abono-detail"><div class="fg" style="margin-bottom:6px"><label>Monto de abono a capital ($)</label><input type="number" class="inp" id="pre-abono" min="0" step="1000" placeholder="Ej: 100000" value="0" /><div class="fnote">Se cobra en la 2ª quincena y reduce el saldo para el siguiente mes.</div></div></div></div>
+  <div class="fg"><label>Garantías * (una o más)</label><div class="gar-checks"><input type="checkbox" class="gar-ck" id="g-tarjeta" value="tarjeta" /><label class="gar-lbl" for="g-tarjeta"><i class="fas fa-credit-card"></i> Tarjeta Nómina</label><input type="checkbox" class="gar-ck" id="g-letra" value="letra" /><label class="gar-lbl" for="g-letra"><i class="fas fa-file-signature"></i> Letra de Cambio</label><input type="checkbox" class="gar-ck" id="g-hipoteca" value="hipoteca" /><label class="gar-lbl" for="g-hipoteca"><i class="fas fa-home"></i> Hipoteca</label><input type="checkbox" class="gar-ck" id="g-prendario" value="prendario" /><label class="gar-lbl" for="g-prendario"><i class="fas fa-car"></i> Prendario</label><input type="checkbox" class="gar-ck" id="g-personal" value="personal" /><label class="gar-lbl" for="g-personal"><i class="fas fa-user-shield"></i> Personal</label></div><div id="gar-fields"><div class="gar-det" id="gd-tarjeta"><h5><i class="fas fa-credit-card"></i> Tarjeta Nómina</h5><div class="frow"><div class="fg"><label>N° Tarjeta *</label><input type="text" class="inp rq" data-g="tarjeta" id="gt-num" /></div><div class="fg"><label>Banco *</label><input type="text" class="inp rq" data-g="tarjeta" id="gt-banco" /></div></div><div class="frow"><div class="fg"><label>Contraseña</label><input type="password" class="inp" id="gt-pass" /></div><div class="fg"><label>Tipo Cuenta</label><input type="text" class="inp" id="gt-tipo" placeholder="Ahorros/Corriente" /></div></div></div><div class="gar-det" id="gd-letra"><h5><i class="fas fa-file-signature"></i> Letra de Cambio</h5><div class="frow"><div class="fg"><label>N° Letra</label><input type="text" class="inp" id="gl-num" /></div><div class="fg"><label>Valor ($)</label><input type="number" class="inp" id="gl-val" /></div></div><div class="fg"><label>Descripción *</label><input type="text" class="inp rq" data-g="letra" id="gl-desc" placeholder="Descripción del bien..." /></div></div><div class="gar-det" id="gd-hipoteca"><h5><i class="fas fa-home"></i> Hipoteca</h5><div class="fg"><label>Dirección Propiedad *</label><input type="text" class="inp rq" data-g="hipoteca" id="gh-dir" /></div><div class="frow"><div class="fg"><label>Matrícula Inmobiliaria</label><input type="text" class="inp" id="gh-mat" /></div><div class="fg"><label>Avalúo ($)</label><input type="number" class="inp" id="gh-aval" /></div></div></div><div class="gar-det" id="gd-prendario"><h5><i class="fas fa-car"></i> Prendario</h5><div class="fg"><label>Bien en Garantía *</label><input type="text" class="inp rq" data-g="prendario" id="gp-bien" placeholder="Ej: Toyota Corolla 2020" /></div><div class="frow"><div class="fg"><label>Placa/Serial</label><input type="text" class="inp" id="gp-placa" /></div><div class="fg"><label>Valor Estimado ($)</label><input type="number" class="inp" id="gp-val" /></div></div></div><div class="gar-det" id="gd-personal"><h5><i class="fas fa-user-shield"></i> Personal</h5><div class="frow"><div class="fg"><label>Codeudor/Fiador *</label><input type="text" class="inp rq" data-g="personal" id="gpe-nom" /></div><div class="fg"><label>Cédula Fiador *</label><input type="text" class="inp rq" data-g="personal" id="gpe-ced" /></div></div><div class="fg"><label>Teléfono Fiador</label><input type="tel" class="inp" id="gpe-tel" /></div></div></div></div>
+  <div class="fg"><label>Notas</label><textarea class="inp" id="pre-notas" rows="2" placeholder="Observaciones..."></textarea></div>
+  <div class="res-box" id="pre-resumen"><h4><i class="fas fa-calculator"></i> Resumen del Crédito</h4><div class="res-row"><span class="rl">Tipo</span><span class="rv" id="res-tipo">Rotativo</span></div><div class="res-row"><span class="rl">Cuota del período</span><span class="rv" id="res-cuota">$0</span></div><div class="res-row"><span class="rl">Total capital + intereses</span><span class="rv" id="res-total">$0</span></div><div class="res-row"><span class="rl">Número de cuotas</span><span class="rv" id="res-ncuotas">—</span></div><div class="qprev" id="qprev"><h5><i class="fas fa-calendar-alt"></i> Detalle quincenal — Mes 1</h5><div class="qrow"><span class="ql">1ª quincena (solo interés)</span><span class="qv qi" id="qp-1">$0</span></div><div class="qrow"><span class="ql">2ª quincena — Interés</span><span class="qv qi" id="qp-2i">$0</span></div><div class="qrow" id="qp-abono-row" style="display:none"><span class="ql">2ª quincena — Abono capital</span><span class="qv qc" id="qp-2c">$0</span></div><div class="qrow" style="margin-top:4px;padding-top:6px;border-top:1px solid rgba(108,63,197,.2)"><span class="ql fw7">Total 2ª quincena</span><span class="qv qt" id="qp-2t">$0</span></div><div class="qrow"><span class="ql">Saldo capital → mes 2</span><span class="qv" style="color:var(--b);font-family:'DM Mono',monospace;font-weight:700" id="qp-saldo">$0</span></div></div></div></form></div><div class="mfoot"><button class="btn btn-outline btn-sm" data-m="m-prestamo">Cancelar</button><button class="btn btn-primary btn-sm" id="btn-sv-pre"><i class="fas fa-check"></i> Crear Crédito</button></div></div></div>
+
+  <!-- Pago -->
+  <div class="modal" id="m-pago"><div class="mbox"><div class="mhdr"><h2>Registrar Pago</h2><button class="mclose" data-m="m-pago">&times;</button></div><div class="mbody"><form id="f-pago" onsubmit="return false"><input type="hidden" id="pago-pid" /><div class="frow"><div class="fg"><label>Cliente</label><input type="text" class="inp" id="pago-cli" readonly style="background:#f8f5ff" /></div><div class="fg"><label>Crédito</label><input type="text" class="inp" id="pago-num" readonly style="background:#f8f5ff" /></div></div><div style="background:#f0edf8;border-radius:9px;padding:14px;margin-bottom:14px"><div style="display:flex;justify-content:space-between;margin-bottom:6px"><span class="text-m">Saldo Capital</span><span class="fw7 mono" id="pb-saldo">$0</span></div><div style="display:flex;justify-content:space-between;margin-bottom:4px"><span class="text-m">Monto a pagar</span><span style="font-weight:800;font-size:1.2rem;color:var(--p);font-family:'DM Mono',monospace" id="pb-monto">$0</span></div><div class="text-m" id="pb-det" style="margin-top:6px"></div></div><div class="int-pend-box" id="pb-intpend-box" style="display:none"><div class="ipb-left"><div class="ipb-ico"><i class="fas fa-exclamation-circle"></i></div><div><span class="ipb-label">Intereses Pendientes Acumulados</span><span class="ipb-amount" id="pb-intpend-val">$0</span></div></div><div style="font-size:.78rem;color:var(--w);text-align:right">NO se cobran automáticamente</div></div><div class="fg"><label>Opción de pago</label><div style="display:flex;gap:7px;flex-wrap:wrap"><label style="display:flex;align-items:center;gap:6px;cursor:pointer;padding:7px 13px;border-radius:20px;border:2px solid var(--border);font-size:.83rem;font-weight:500"><input type="radio" name="tp" value="cuota" id="tp-cuota" checked /> Pagar cuota</label><label style="display:flex;align-items:center;gap:6px;cursor:pointer;padding:7px 13px;border-radius:20px;border:2px solid var(--border);font-size:.83rem;font-weight:500"><input type="radio" name="tp" value="abono" id="tp-abono" /> Abono extra</label><label style="display:flex;align-items:center;gap:6px;cursor:pointer;padding:7px 13px;border-radius:20px;border:2px solid var(--border);font-size:.83rem;font-weight:500"><input type="radio" name="tp" value="cancelar" id="tp-cancelar" /> Cancelar crédito</label><label style="display:flex;align-items:center;gap:6px;cursor:pointer;padding:7px 13px;border-radius:20px;border:2px solid var(--border);font-size:.83rem;font-weight:500"><input type="radio" name="tp" value="vencidas" id="tp-vencidas" /> Pagar todas las vencidas</label><label style="display:flex;align-items:center;gap:6px;cursor:pointer;padding:7px 13px;border-radius:20px;border:2px solid var(--border);font-size:.83rem;font-weight:500"><input type="radio" name="tp" value="periodos" id="tp-periodos" /> Seleccionar cuotas/meses</label><label style="display:flex;align-items:center;gap:6px;cursor:pointer;padding:7px 13px;border-radius:20px;border:2px solid var(--border);font-size:.83rem;font-weight:500"><input type="radio" name="tp" value="personalizado" id="tp-personalizado" /> Personalizado</label><label style="display:flex;align-items:center;gap:6px;cursor:pointer;padding:7px 13px;border-radius:20px;border:2px solid var(--border);font-size:.83rem;font-weight:500"><input type="radio" name="tp" value="intpendientes" id="tp-intpendientes" /> Solo int. pendientes</label><label style="display:flex;align-items:center;gap:6px;cursor:pointer;padding:7px 13px;border-radius:20px;border:2px solid var(--border);font-size:.83rem;font-weight:500"><input type="radio" name="tp" value="sumar_int_capital" id="tp-sumarint" /> Sumar int. pendientes al capital</label></div></div><div id="div-periodos" style="display:none;margin-bottom:14px"><div class="alert al-b"><i class="fas fa-calendar-check"></i> Marque las cuotas o meses atrasados que el cliente está pagando ahora. El total se suma automáticamente.</div><div id="periodos-checklist" style="max-height:220px;overflow-y:auto;border:1px solid var(--border);border-radius:9px;padding:10px;background:#fff"></div><div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;padding:10px 14px;background:var(--surface2);border-radius:9px"><span class="text-m fw7">Total seleccionado</span><span class="mono fw7" id="periodos-total" style="font-size:1.05rem;color:var(--p)">$0</span></div></div>
+  <div id="div-abono-extra" style="display:none;margin-bottom:14px"><div class="fg"><label>Monto adicional a capital ($)</label><input type="number" class="inp" id="pago-extra" min="0" step="1000" placeholder="Ej: 50000" /></div></div>
+  <div id="div-personalizado" style="display:none;margin-bottom:14px"><div class="alert al-w"><i class="fas fa-info-circle"></i> Si no paga todos los intereses del período, la diferencia se acumulará como <b>Intereses Pendientes</b>.</div><div class="frow"><div class="fg"><label>Intereses a pagar ($)</label><input type="number" class="inp" id="pago-int" min="0" step="1000" placeholder="0" /></div><div class="fg"><label>Capital a pagar ($)</label><input type="number" class="inp" id="pago-cap" min="0" step="1000" placeholder="0" /></div></div><div class="fnote">Interés período + pendientes: <span id="pago-max-int">$0</span> | Capital disponible: <span id="pago-max-cap">$0</span></div></div>
+  <div id="div-intpendientes" style="display:none;margin-bottom:14px"><div class="alert al-p"><i class="fas fa-info-circle"></i> Pagará únicamente los intereses pendientes acumulados.</div><div class="fg"><label>Monto intereses pendientes a pagar ($)</label><input type="number" class="inp" id="pago-intpend-monto" min="0" step="1000" placeholder="0" /></div><div class="fnote">Máximo: <span id="pago-max-intpend">$0</span></div></div>
+  <div id="div-sumar-int" style="display:none;margin-bottom:14px"><div class="alert al-b"><i class="fas fa-info-circle"></i> Se sumarán los intereses pendientes al capital actual. El saldo aumentará y se recalcularán las cuotas pendientes.</div><div class="fg"><label>Confirmar operación</label><input type="checkbox" id="chk-sumar-confirm" /> <label for="chk-sumar-confirm" style="display:inline">Entiendo que el capital aumentará y se generarán nuevos intereses sobre el total.</label></div></div>
+  <div class="frow"><div class="fg"><label>Fecha *</label><input type="date" class="inp" id="pago-fecha" required /></div><div class="fg"><label>Método</label><select class="inp" id="pago-met"><option value="efectivo">Efectivo</option><option value="transferencia">Transferencia</option><option value="cheque">Cheque</option></select></div></div>
+  <div class="fg"><label>Referencia</label><input type="text" class="inp" id="pago-ref" placeholder="N° transacción (opcional)" /></div></form></div><div class="mfoot"><button class="btn btn-outline btn-sm" data-m="m-pago">Cancelar</button><button class="btn btn-success btn-sm" id="btn-conf-pago"><i class="fas fa-check"></i> Confirmar</button></div></div></div>
+
+  <!-- Fuente Externa (Fondeo) -->
+  <div class="modal" id="m-fuente"><div class="mbox"><div class="mhdr"><h2 id="m-fuente-title">Nueva Fuente Externa</h2><button class="mclose" data-m="m-fuente">&times;</button></div><div class="mbody"><form id="f-fuente" onsubmit="return false"><input type="hidden" id="fuente-id" /><div class="frow"><div class="fg"><label>Prestamista *</label><input type="text" class="inp" id="f-prestamista" required /></div><div class="fg"><label>Monto ($) *</label><input type="number" class="inp" id="f-monto" required min="1" /></div></div><div class="frow"><div class="fg"><label>Interés Mensual (%) *</label><input type="number" class="inp" id="f-tasa" step="0.1" required /></div><div class="fg"><label>Frecuencia *</label><select class="inp" id="f-frec"><option value="diario">Diario</option><option value="semanal">Semanal</option><option value="quincenal" selected>Quincenal</option><option value="mensual">Mensual</option></select></div></div><div class="frow"><div class="fg"><label>Fecha Inicio *</label><input type="date" class="inp" id="f-fecha" required /></div><div class="fg"><label>Estado</label><select class="inp" id="f-estado"><option value="activo">Activo</option><option value="pagado">Pagado</option><option value="cancelado">Cancelado</option></select></div></div><div class="fg"><label>Notas</label><textarea class="inp" id="f-notas" rows="2"></textarea></div></form></div><div class="mfoot"><button class="btn btn-outline btn-sm" data-m="m-fuente">Cancelar</button><button class="btn btn-primary btn-sm" id="btn-sv-fuente"><i class="fas fa-save"></i> Guardar</button></div></div></div>
+
+  <!-- Pago a Fuente -->
+  <div class="modal" id="m-pago-fuente"><div class="mbox" style="max-width:480px"><div class="mhdr"><h2>Pagar Fuente Externa</h2><button class="mclose" data-m="m-pago-fuente">&times;</button></div><div class="mbody"><div id="pf-info"></div><div class="fg"><label>Monto a pagar ($)</label><input type="number" class="inp" id="pf-monto" step="1000" /></div><div class="fg"><label>Fecha Pago</label><input type="date" class="inp" id="pf-fecha" /></div></div><div class="mfoot"><button class="btn btn-outline btn-sm" data-m="m-pago-fuente">Cancelar</button><button class="btn btn-success btn-sm" id="btn-pf-confirm"><i class="fas fa-check"></i> Pagar</button></div></div></div>
+
+  <!-- Embargo (no usado) -->
+  <div class="modal" id="m-embargo"><div class="mbox wide"><div class="mhdr"><h2 id="m-emb-title">Proceso Jurídico</h2><button class="mclose" data-m="m-embargo">&times;</button></div><div class="mbody">...</div><div class="mfoot">...</div></div></div>
+
+  <!-- Detalle -->
+  <div class="modal" id="m-detalle"><div class="mbox wide"><div class="mhdr"><h2 id="m-det-title">Detalle</h2><button class="mclose" data-m="m-detalle">&times;</button></div><div class="mbody" id="m-det-body"></div><div class="mfoot"><button class="btn btn-success btn-sm" id="btn-det-pdf"><i class="fas fa-file-pdf"></i> PDF</button><button class="btn btn-outline btn-sm" data-m="m-detalle">Cerrar</button></div></div></div>
+
+  <!-- Reiniciar -->
+  <div class="modal" id="m-reiniciar"><div class="mbox" style="max-width:420px"><div class="mhdr"><h2><i class="fas fa-exclamation-triangle text-r"></i> Reiniciar</h2><button class="mclose" data-m="m-reiniciar">&times;</button></div><div class="mbody"><div class="alert al-r"><i class="fas fa-skull"></i> <b>¡PELIGRO!</b> Se borrarán TODOS los datos.</div><div class="fg"><label>Escriba "REINICIAR" para confirmar</label><input type="text" class="inp" id="r-confirm" placeholder="REINICIAR" /></div><label style="display:flex;align-items:center;gap:8px;margin-top:8px;cursor:pointer;font-size:.88rem"><input type="checkbox" id="r-backup" /> Descargar respaldo JSON antes de borrar</label></div><div class="mfoot"><button class="btn btn-outline btn-sm" data-m="m-reiniciar">Cancelar</button><button class="btn btn-danger btn-sm" id="btn-do-reiniciar" disabled><i class="fas fa-bomb"></i> Reiniciar</button></div></div></div>
+
+  <!-- Editar Préstamo -->
+  <div class="modal" id="m-editprestamo"><div class="mbox wide"><div class="mhdr"><h2><i class="fas fa-edit"></i> Editar Crédito</h2><button class="mclose" data-m="m-editprestamo">&times;</button></div><div class="mbody"><form id="f-editpre" onsubmit="return false"><input type="hidden" id="edit-pid" /><div class="alert al-w" id="edit-warning" style="display:none">⚠️ Este crédito ya tiene pagos registrados. Editar recalculará las cuotas pendientes.</div><div class="fg"><label>Monto Total ($)</label><input type="number" class="inp" id="edit-monto" required /></div><div class="frow"><div class="fg"><label>Interés Mensual (%)</label><input type="number" class="inp" id="edit-int" step="0.1" /></div><div class="fg"><label>Frecuencia</label><select class="inp" id="edit-frec"><option value="diario">Diario</option><option value="semanal">Semanal</option><option value="quincenal">Quincenal</option><option value="mensual">Mensual</option></select></div></div><div class="frow"><div class="fg"><label>Plazo (meses, solo amortizable)</label><input type="number" class="inp" id="edit-plazo" min="0" step="1" /></div><div class="fg"><label>Abono capital (2ª quincena)</label><input type="number" class="inp" id="edit-abono" min="0" /></div></div></form></div><div class="mfoot"><button class="btn btn-outline btn-sm" data-m="m-editprestamo">Cancelar</button><button class="btn btn-primary btn-sm" id="btn-sv-editpre"><i class="fas fa-save"></i> Guardar Cambios</button></div></div></div>
+
+  <!-- Desembolso Extra -->
+  <div class="modal" id="m-desembolso"><div class="mbox"><div class="mhdr"><h2><i class="fas fa-plus-circle"></i> Desembolso Extra</h2><button class="mclose" data-m="m-desembolso">&times;</button></div><div class="mbody"><div id="des-cred-info"></div><div class="fg"><label>Monto adicional a agregar ($)</label><input type="number" class="inp" id="des-monto" min="1000" step="1000" /></div><div class="fg"><label>Concepto</label><textarea class="inp" id="des-concepto" rows="2" placeholder="Ej: Nuevo desembolso de capital"></textarea></div><div class="fg"><label>Fecha del desembolso *</label><input type="date" class="inp" id="des-fecha" required /></div></div><div class="mfoot"><button class="btn btn-outline btn-sm" data-m="m-desembolso">Cancelar</button><button class="btn btn-warning btn-sm" id="btn-conf-des"><i class="fas fa-plus"></i> Agregar y Recalcular</button></div></div></div>
+
+  <!-- Editar Pago -->
+  <div class="modal" id="m-editpago"><div class="mbox wide"><div class="mhdr"><h2><i class="fas fa-edit"></i> Editar Pago</h2><button class="mclose" data-m="m-editpago">&times;</button></div><div class="mbody"><input type="hidden" id="edit-pay-id" /><div class="frow"><div class="fg"><label>Monto Total ($)</label><input type="number" class="inp" id="edit-pay-monto" step="1000" /></div><div class="fg"><label>Capital ($)</label><input type="number" class="inp" id="edit-pay-capital" step="1000" /></div></div><div class="frow"><div class="fg"><label>Intereses ($)</label><input type="number" class="inp" id="edit-pay-interes" step="1000" /></div><div class="fg"><label>Fecha Pago</label><input type="date" class="inp" id="edit-pay-fecha" /></div></div><div class="frow"><div class="fg"><label>Método</label><select class="inp" id="edit-pay-metodo"><option value="efectivo">Efectivo</option><option value="transferencia">Transferencia</option><option value="cheque">Cheque</option></select></div><div class="fg"><label>Referencia</label><input type="text" class="inp" id="edit-pay-ref" /></div></div></div><div class="mfoot"><button class="btn btn-outline btn-sm" data-m="m-editpago">Cancelar</button><button class="btn btn-primary btn-sm" id="btn-save-editpay">Guardar Cambios</button></div></div></div>
+
+  <!-- Editar Cuota -->
+  <div class="modal" id="m-editcuota"><div class="mbox wide"><div class="mhdr"><h2><i class="fas fa-edit"></i> Editar Cuota</h2><button class="mclose" data-m="m-editcuota">&times;</button></div><div class="mbody"><input type="hidden" id="edit-cuota-pid" /><input type="hidden" id="edit-cuota-num" /><div class="fg"><label>Fecha de vencimiento</label><input type="date" class="inp" id="edit-cuota-fecha" /></div><div class="frow"><div class="fg"><label>Capital ($)</label><input type="number" class="inp" id="edit-cuota-cap" step="1000" /></div><div class="fg"><label>Interés ($)</label><input type="number" class="inp" id="edit-cuota-int" step="1000" /></div></div><div class="fg"><label>Total ($)</label><input type="number" class="inp" id="edit-cuota-total" step="1000" readonly style="background:#f8f5ff" /></div><div class="alert al-w">⚠️ Cambiar estos valores afectará el saldo del préstamo. Úselo con cuidado.</div></div><div class="mfoot"><button class="btn btn-outline btn-sm" data-m="m-editcuota">Cancelar</button><button class="btn btn-primary btn-sm" id="btn-save-editcuota">Guardar Cambios</button></div></div></div>
+
+  <!-- ========== SCRIPTS ========== -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/app.js"></script>
+</body>
+</html>

@@ -418,21 +418,28 @@ router.post('/:id/pagos', async (req, res) => {
 
   if (p.saldo <= 0 && (p.interesesPendientes || 0) <= 0) p.estado = 'pagado';
 
-  let gananciaNeta = 0;
+  // Ganancia neta: para créditos con capital propio, todo el interés cobrado es ganancia
+  // (no hay costo externo que descontar). Para créditos fondeados por un tercero, se
+  // descuenta el interés que le corresponde a ese prestamista. Antes esto solo se
+  // calculaba para créditos fondeados externamente, dejando fuera el 100% de la
+  // ganancia de todos los clientes con capital propio.
+  let gananciaNeta = int;
+  let detalleGanancia = `int cobrado $${int} (capital propio)`;
   if (p.fuenteExternaId) {
     const f = await FuenteExterna.findOne({ idNum: p.fuenteExternaId });
     if (f) {
       const saldoParaInteres = p.saldo + cap;
       const interesExterno = roundM(saldoParaInteres * tasaP(f.tasaInteres, p.frecuencia));
       gananciaNeta = int - interesExterno;
-      if (gananciaNeta > 0) {
-        const cfg = await Config.findById('config');
-        cfg.ganancias = (cfg.ganancias || 0) + gananciaNeta;
-        await cfg.save();
-        p.gananciaNetaAcumulada = (p.gananciaNetaAcumulada || 0) + gananciaNeta;
-        await audit('ganancia', `Ganancia neta por crédito #${p.idNum}: $${gananciaNeta} (int cobrado $${int} - int externo $${interesExterno})`, 'credito');
-      }
+      detalleGanancia = `int cobrado $${int} - int externo $${interesExterno}`;
     }
+  }
+  if (gananciaNeta > 0) {
+    const cfg = await Config.findById('config');
+    cfg.ganancias = (cfg.ganancias || 0) + gananciaNeta;
+    await cfg.save();
+    p.gananciaNetaAcumulada = (p.gananciaNetaAcumulada || 0) + gananciaNeta;
+    await audit('ganancia', `Ganancia neta por crédito #${p.idNum}: $${gananciaNeta} (${detalleGanancia})`, 'credito');
   }
 
   const idNum = await nextId('pago');

@@ -139,7 +139,9 @@ function calcularCapital(cfg, fuentesExternas, prestamos) {
   const capitalExterno = fuentesExternas.filter((f) => f.estado === 'activo').reduce((a, f) => a + f.saldo, 0);
   const capitalTotal = capitalPropio + capitalExterno;
   const saldoActivo = prestamos.filter((p) => p.estado !== 'pagado').reduce((a, p) => a + p.saldo, 0);
-  const capitalDisponible = Math.max(0, capitalTotal - saldoActivo);
+  // Se permite negativo a propósito: si se presta más de lo que hay cargado como
+  // capital, el Dashboard debe poder avisarlo en vez de esconderlo en $0.
+  const capitalDisponible = capitalTotal - saldoActivo;
   return { base, ganancias, capitalPropio, capitalExterno, capitalTotal, capitalDisponible, saldoActivo };
 }
 

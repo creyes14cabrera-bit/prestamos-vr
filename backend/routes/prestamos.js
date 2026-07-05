@@ -19,12 +19,6 @@ const REQUIRED_FIELDS = {
   personal: ['codeudor', 'cedula']
 };
 
-async function calcularCapitalActual(cfg) {
-  const { calcularCapital } = require('../lib/calc');
-  const [fuentesExternas, prestamos] = await Promise.all([FuenteExterna.find(), Prestamo.find()]);
-  return calcularCapital(cfg, fuentesExternas, prestamos);
-}
-
 // `fuente.saldo` representa el monto que el negocio aún le debe al prestamista externo
 // (solo baja cuando se le paga con pagarFuente/confirmarPagoFuente). La capacidad que
 // todavía se puede asignar a créditos NUEVOS es ese saldo menos lo que ya está
@@ -51,15 +45,17 @@ router.post('/', async (req, res) => {
   }
   monto = roundM(monto);
 
-  const cap = await calcularCapitalActual(cfg);
+  // No se bloquea la creación por falta de capital propio: el negocio puede empezar a
+  // prestar sin haber configurado un capital base, y el Dashboard ya avisa con la alerta
+  // de "Capital disponible negativo" cuando lo prestado supera el capital cargado. Lo
+  // único que sigue siendo un límite duro es no exceder lo que una fuente externa
+  // específica tiene realmente disponible (eso sí es una restricción real del prestamista).
   let fuente = null;
   if (fuenteId) {
     fuente = await FuenteExterna.findOne({ idNum: +fuenteId });
     if (!fuente || fuente.estado !== 'activo') return res.status(400).json({ error: 'Fuente externa no válida o inactiva' });
     const disponible = await capacidadFuenteDisponible(fuente);
     if (monto > disponible) return res.status(400).json({ error: `La fuente solo tiene $${disponible} disponibles sin asignar` });
-  } else if (monto > cap.capitalDisponible) {
-    return res.status(400).json({ error: `Capital insuficiente. Disponible: $${cap.capitalDisponible}` });
   }
 
   const gars = Array.isArray(garantias) ? garantias : [];
@@ -221,7 +217,6 @@ router.put('/:id/cuotas/:numero', async (req, res) => {
 
 // POST /api/prestamos/:id/desembolso — equivalente a confirmDisbursement().
 router.post('/:id/desembolso', async (req, res) => {
-  const cfg = await Config.findById('config');
   const p = await Prestamo.findOne({ idNum: +req.params.id });
   if (!p) return res.status(404).json({ error: 'Crédito no encontrado' });
 
@@ -229,10 +224,7 @@ router.post('/:id/desembolso', async (req, res) => {
   if (isNaN(extra) || extra <= 0) return res.status(400).json({ error: 'Monto válido requerido' });
   extra = roundM(extra);
 
-  const cap = await calcularCapitalActual(cfg);
-  if (extra > cap.capitalDisponible) {
-    return res.status(400).json({ error: `Capital insuficiente. Disponible: $${cap.capitalDisponible}` });
-  }
+  // Igual que en la creación de créditos: no se bloquea por falta de capital propio.
 
   const concepto = (req.body.concepto || '').trim() || 'Desembolso adicional';
   const fechaDes = req.body.fecha || hoy();

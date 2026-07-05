@@ -126,6 +126,13 @@ router.post('/', async (req, res) => {
   // capacidadFuenteDisponible). Descontar aquí Y sumar el crédito a saldoActivo hacía
   // que "Capital Disponible" restara el mismo monto dos veces.
 
+  // Capital Disponible es un saldo de caja real: baja cuando se presta con capital
+  // propio (fondeado externamente no lo toca, ese dinero no sale de tu bolsillo).
+  if (!fuente) {
+    cfg.capitalDisponible = (cfg.capitalDisponible || 0) - monto;
+    await cfg.save();
+  }
+
   await audit(
     'credito',
     `Crédito #${doc.idNum} — ${cli.nombre} — $${monto} — ${frec}${abonoCapital > 0 ? ' — abono $' + abonoCapital : ''}${fuente ? ' — Fondeado externamente' : ''}`,
@@ -418,6 +425,9 @@ router.post('/:id/pagos', async (req, res) => {
 
   if (p.saldo <= 0 && (p.interesesPendientes || 0) <= 0) p.estado = 'pagado';
 
+  const cfg = await Config.findById('config');
+  let cfgCambio = false;
+
   // Ganancia neta: para créditos con capital propio, todo el interés cobrado es ganancia
   // (no hay costo externo que descontar). Para créditos fondeados por un tercero, se
   // descuenta el interés que le corresponde a ese prestamista. Antes esto solo se
@@ -433,14 +443,19 @@ router.post('/:id/pagos', async (req, res) => {
       gananciaNeta = int - interesExterno;
       detalleGanancia = `int cobrado $${int} - int externo $${interesExterno}`;
     }
+  } else if (monto > 0) {
+    // Capital propio: cualquier pago recibido (capital + interés) vuelve a estar
+    // disponible para prestar — es un saldo de caja real, sube y baja con cada movimiento.
+    cfg.capitalDisponible = (cfg.capitalDisponible || 0) + monto;
+    cfgCambio = true;
   }
   if (gananciaNeta > 0) {
-    const cfg = await Config.findById('config');
     cfg.ganancias = (cfg.ganancias || 0) + gananciaNeta;
-    await cfg.save();
+    cfgCambio = true;
     p.gananciaNetaAcumulada = (p.gananciaNetaAcumulada || 0) + gananciaNeta;
     await audit('ganancia', `Ganancia neta por crédito #${p.idNum}: $${gananciaNeta} (${detalleGanancia})`, 'credito');
   }
+  if (cfgCambio) await cfg.save();
 
   const idNum = await nextId('pago');
   const pg = await Pago.create({

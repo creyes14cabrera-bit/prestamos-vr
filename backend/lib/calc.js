@@ -136,9 +136,11 @@ function calcularCapital(cfg, fuentesExternas, prestamos) {
   const base = cfg.capitalBase || 0;
   const ganancias = cfg.ganancias || 0;
   const activos = prestamos.filter((p) => p.estado !== 'pagado');
-  // Todo crédito que no esté fondeado por un tercero sale de capital propio.
-  const saldoPropioEnCalle = activos.filter((p) => !p.fuenteExternaId).reduce((a, p) => a + p.saldo, 0);
-  const capitalPropio = base + ganancias + saldoPropioEnCalle;
+  // Todo crédito que no esté fondeado por un tercero cuenta como capital propio, por el
+  // monto original prestado (no el saldo pendiente — lo ya pagado se recupera aparte en
+  // Capital Disponible, no debe "desaparecer" de lo que se considera invertido).
+  const prestadoPropio = activos.filter((p) => !p.fuenteExternaId).reduce((a, p) => a + p.monto, 0);
+  const capitalPropio = base + ganancias + prestadoPropio;
   const capitalExterno = fuentesExternas.filter((f) => f.estado === 'activo').reduce((a, f) => a + f.saldo, 0);
   const capitalTotal = capitalPropio + capitalExterno;
   const saldoActivo = activos.reduce((a, p) => a + p.saldo, 0);

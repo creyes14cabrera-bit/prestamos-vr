@@ -603,18 +603,86 @@ function abrirNuevoPre() {
   openM('m-prestamo');
 }
 
+// Vista previa en el modal de creación de crédito. Es solo informativa — el backend
+// recalcula todo de forma autoritativa al crear el crédito — pero debe reflejar de forma
+// razonablemente fiel lo que se va a generar, para ambos tipos (rotativo/amortizable).
 function calcResumen() {
   const monto = +V('pre-monto') || 0;
   const int = +V('pre-int') || 0;
-  if (monto && int) {
+  const frec = V('pre-frec');
+  const tipo = V('pre-tipo');
+  const tieneAbono = id('pre-tiene-abono').checked;
+  const abono = tieneAbono ? (+V('pre-abono') || 0) : 0;
+  const qprevEl = document.getElementById('qprev');
+
+  if (!monto || !int) {
+    setT('res-tipo', tipo === 'rotativo' ? 'Rotativo' : 'Amortizable');
+    setT('res-cuota', '$0');
+    setT('res-total', '$0');
+    setT('res-ncuotas', '—');
+    qprevEl.style.display = 'none';
+    return;
+  }
+
+  if (tipo === 'rotativo') {
+    const cuotaPeriodo = roundM(monto * tasaP(int, frec));
+    setT('res-tipo', 'Rotativo (solo intereses, renovable)');
+    setT('res-cuota', '$' + fmt(cuotaPeriodo) + ' / período');
+    setT('res-total', 'Renovable — sin plazo fijo');
+    setT('res-ncuotas', 'Indefinido (hasta cancelar)');
+  } else {
+    const plazo = +V('pre-plazo') || 0;
+    const ncuotas = +V('pre-ncuotas') || 0;
+    if (!ncuotas) {
+      setT('res-tipo', 'Amortizable (plazo fijo)');
+      setT('res-cuota', '$0');
+      setT('res-total', '$0');
+      setT('res-ncuotas', 'Ingrese N° de cuotas');
+      qprevEl.style.display = 'none';
+      return;
+    }
+    let totalPagar;
+    if (frec === 'quincenal') {
+      // misma lógica que genCuotas() en el backend: interés + abono declinante por quincena.
+      const numMeses = Math.ceil(ncuotas / 2);
+      let saldo = monto, totInt = 0;
+      for (let m = 0; m < numMeses; m++) {
+        const intQ = roundM(saldo * (int / 100) / 2);
+        const abonoEf = roundM(Math.min(abono, saldo));
+        totInt += intQ * 2;
+        saldo = Math.max(0, saldo - abonoEf);
+        if (saldo <= 0) break;
+      }
+      totalPagar = monto + totInt;
+    } else {
+      const fcMeses = frec === 'diario' ? 30 : frec === 'semanal' ? 4 : 1;
+      const plazoMeses = plazo > 0 ? plazo : ncuotas / fcMeses;
+      totalPagar = monto + monto * (int / 100) * plazoMeses;
+    }
+    setT('res-tipo', 'Amortizable (plazo fijo)');
+    setT('res-cuota', '$' + fmt(totalPagar / ncuotas));
+    setT('res-total', '$' + fmt(totalPagar));
+    setT('res-ncuotas', ncuotas);
+  }
+
+  if (frec === 'quincenal') {
     const q1 = roundM(monto * int / 100 / 2);
     setT('qp-1', '$' + fmt(q1));
     setT('qp-2i', '$' + fmt(q1));
-    setT('qp-2t', '$' + fmt(q1));
-    setT('qp-saldo', '$' + fmt(monto));
-    document.getElementById('qprev').style.display = 'block';
+    const abonoRow = document.getElementById('qp-abono-row');
+    if (abono > 0) {
+      abonoRow.style.display = 'flex';
+      setT('qp-2c', '$' + fmt(abono));
+      setT('qp-2t', '$' + fmt(q1 + abono));
+      setT('qp-saldo', '$' + fmt(Math.max(0, monto - abono)));
+    } else {
+      abonoRow.style.display = 'none';
+      setT('qp-2t', '$' + fmt(q1));
+      setT('qp-saldo', '$' + fmt(monto));
+    }
+    qprevEl.style.display = 'block';
   } else {
-    document.getElementById('qprev').style.display = 'none';
+    qprevEl.style.display = 'none';
   }
 }
 
@@ -1233,6 +1301,24 @@ function setupEvents() {
       id('pre-cli-id').value = '';
       id('pre-cli-info').textContent = '';
     }
+  });
+
+  // Muestra los campos de Plazo/N° Cuotas solo para crédito amortizable, y mantiene el
+  // "Resumen del Crédito" actualizado con cualquier cambio relevante del formulario.
+  document.getElementById('pre-tipo').addEventListener('change', function () {
+    document.getElementById('div-amort').style.display = this.value === 'amortizable' ? 'block' : 'none';
+    calcResumen();
+  });
+  document.getElementById('pre-frec').addEventListener('change', function () {
+    document.getElementById('abono-box').style.display = this.value === 'quincenal' ? 'block' : 'none';
+    calcResumen();
+  });
+  document.getElementById('pre-tiene-abono').addEventListener('change', function () {
+    document.getElementById('abono-detail').classList.toggle('show', this.checked);
+    calcResumen();
+  });
+  ['pre-monto', 'pre-int', 'pre-plazo', 'pre-ncuotas', 'pre-abono'].forEach(fid => {
+    document.getElementById(fid).addEventListener('input', calcResumen);
   });
 
   document.getElementById('btn-simular').addEventListener('click', function () {

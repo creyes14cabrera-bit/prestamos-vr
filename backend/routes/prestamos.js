@@ -25,6 +25,18 @@ async function calcularCapitalActual(cfg) {
   return calcularCapital(cfg, fuentesExternas, prestamos);
 }
 
+// `fuente.saldo` representa el monto que el negocio aún le debe al prestamista externo
+// (solo baja cuando se le paga con pagarFuente/confirmarPagoFuente). La capacidad que
+// todavía se puede asignar a créditos NUEVOS es ese saldo menos lo que ya está
+// comprometido en créditos activos fondeados por esa misma fuente.
+async function capacidadFuenteDisponible(fuente, excluirPrestamoId = null) {
+  const filtro = { fuenteExternaId: fuente.idNum, estado: { $ne: 'pagado' } };
+  if (excluirPrestamoId) filtro.idNum = { $ne: excluirPrestamoId };
+  const activos = await Prestamo.find(filtro);
+  const asignado = activos.reduce((a, p) => a + p.saldo, 0);
+  return fuente.saldo - asignado;
+}
+
 // POST /api/prestamos — equivalente a savePre().
 router.post('/', async (req, res) => {
   const cfg = await Config.findById('config');
@@ -44,7 +56,8 @@ router.post('/', async (req, res) => {
   if (fuenteId) {
     fuente = await FuenteExterna.findOne({ idNum: +fuenteId });
     if (!fuente || fuente.estado !== 'activo') return res.status(400).json({ error: 'Fuente externa no válida o inactiva' });
-    if (monto > fuente.saldo) return res.status(400).json({ error: `La fuente solo dispone de $${fuente.saldo}` });
+    const disponible = await capacidadFuenteDisponible(fuente);
+    if (monto > disponible) return res.status(400).json({ error: `La fuente solo tiene $${disponible} disponibles sin asignar` });
   } else if (monto > cap.capitalDisponible) {
     return res.status(400).json({ error: `Capital insuficiente. Disponible: $${cap.capitalDisponible}` });
   }
@@ -112,10 +125,10 @@ router.post('/', async (req, res) => {
 
   const doc = await Prestamo.create(pre);
 
-  if (fuente) {
-    fuente.saldo = Math.max(0, fuente.saldo - monto);
-    await fuente.save();
-  }
+  // Nota: `fuente.saldo` ya no se descuenta aquí — representa lo que se le debe al
+  // prestamista externo, no lo "disponible para prestar" (eso se valida arriba con
+  // capacidadFuenteDisponible). Descontar aquí Y sumar el crédito a saldoActivo hacía
+  // que "Capital Disponible" restara el mismo monto dos veces.
 
   await audit(
     'credito',

@@ -64,13 +64,16 @@ function errMsg(err) { return (err && err.message) || 'Ocurrió un error inesper
 function calcularCapital() {
   const base = S.cfg.capitalBase || 0;
   const ganancias = S.cfg.ganancias || 0;
-  const capitalPropio = base + ganancias;
+  const activos = S.prestamos.filter(p => p.estado !== 'pagado');
+  // Todo crédito que no esté fondeado por un tercero sale de capital propio.
+  const saldoPropioEnCalle = activos.filter(p => !p.fuenteExternaId).reduce((a, p) => a + p.saldo, 0);
+  const capitalPropio = base + ganancias + saldoPropioEnCalle;
   const capitalExterno = S.fuentesExternas.filter(f => f.estado === 'activo').reduce((a, f) => a + f.saldo, 0);
   const capitalTotal = capitalPropio + capitalExterno;
-  const saldoActivo = S.prestamos.filter(p => p.estado !== 'pagado').reduce((a, p) => a + p.saldo, 0);
-  // Se permite negativo a propósito: si se presta más de lo que hay cargado como
-  // capital, el Dashboard debe poder avisarlo en vez de esconderlo en $0.
-  const capitalDisponible = capitalTotal - saldoActivo;
+  const saldoActivo = activos.reduce((a, p) => a + p.saldo, 0);
+  // A diferencia de las demás cifras, esta no se calcula: la establece el usuario
+  // directamente (Configuración > Parámetros) y si no la define queda en 0.
+  const capitalDisponible = S.cfg.capitalDisponible || 0;
   return { base, ganancias, capitalPropio, capitalExterno, capitalTotal, capitalDisponible, saldoActivo };
 }
 
@@ -208,7 +211,7 @@ function renderDash() {
   const hoyV = venc.filter(v => v.fechaVence === h).length;
   if (hoyV) al += `<div class="alert al-w"><i class="fas fa-clock"></i> <b>${hoyV} cuota(s) vencen HOY.</b></div>`;
   if (totalIntPend > 0) al += `<div class="alert al-w"><i class="fas fa-exclamation-circle"></i> <b>$${fmt(totalIntPend)}</b> en intereses pendientes acumulados en cartera activa.</div>`;
-  if (cap.capitalDisponible < 0) al += `<div class="alert al-r"><i class="fas fa-exclamation-triangle"></i> <b>Capital disponible negativo:</b> el saldo de préstamos supera el capital total. Revise la cartera.</div>`;
+  if (cap.capitalDisponible < 0) al += `<div class="alert al-r"><i class="fas fa-exclamation-triangle"></i> <b>Capital disponible negativo:</b> revisa el valor que cargaste en Configuración.</div>`;
   if (!al) al = '<p class="text-m" style="padding:6px 0">Sin alertas activas ✓</p>';
   id('alertas').innerHTML = al;
   updChart();
@@ -454,12 +457,13 @@ function renderAudit() {
 function updCfgUI() {
   const cap = calcularCapital();
   id('cfg-cap').value = S.cfg.capitalBase || 0;
+  id('cfg-capdisp-input').value = S.cfg.capitalDisponible || 0;
   id('cfg-int').value = S.cfg.interes || 10;
   id('cfg-gracia').value = S.cfg.gracia || 5;
   id('cfg-min').value = S.cfg.minimo || 50000;
   id('cfg-mora').value = S.cfg.moratoria || 3;
   id('cfg-frec').value = S.cfg.frec || 'quincenal';
-  id('cfg-capbase').textContent = '$' + fmt(cap.base);
+  id('cfg-capbase').textContent = '$' + fmt(cap.capitalPropio);
   id('cfg-ganancias').textContent = '$' + fmt(cap.ganancias);
   id('cfg-captotal').textContent = '$' + fmt(cap.capitalTotal);
 }
@@ -1396,6 +1400,7 @@ function setupEvents() {
     try {
       await api.put('/config', {
         capitalBase: +V('cfg-cap') || 0,
+        capitalDisponible: +V('cfg-capdisp-input') || 0,
         interes: +V('cfg-int') || 10,
         gracia: +V('cfg-gracia') || 5,
         minimo: +V('cfg-min') || 0,

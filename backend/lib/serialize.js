@@ -94,6 +94,7 @@ function auditoria(a) {
 function cfg(c) {
   return {
     capitalBase: c.capitalBase,
+    capitalDisponible: c.capitalDisponible,
     ganancias: c.ganancias,
     interes: c.interes,
     gracia: c.gracia,

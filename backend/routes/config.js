@@ -13,12 +13,17 @@ router.get('/', async (req, res) => {
 // PUT /api/config — equivalente a btn-save-cfg y a guardarCapital (m-capital).
 router.put('/', async (req, res) => {
   const cfg = await Config.findById('config');
-  const { capitalBase, interes, gracia, minimo, moratoria, frec } = req.body || {};
+  const { capitalBase, capitalDisponible, interes, gracia, minimo, moratoria, frec } = req.body || {};
 
   if (capitalBase !== undefined) {
     const v = +capitalBase;
     if (isNaN(v) || v < 0) return res.status(400).json({ error: 'Capital base inválido' });
     cfg.capitalBase = v;
+  }
+  if (capitalDisponible !== undefined) {
+    const v = +capitalDisponible;
+    if (isNaN(v)) return res.status(400).json({ error: 'Capital disponible inválido' });
+    cfg.capitalDisponible = v;
   }
   if (interes !== undefined) cfg.interes = +interes || 10;
   if (gracia !== undefined) cfg.gracia = +gracia || 5;

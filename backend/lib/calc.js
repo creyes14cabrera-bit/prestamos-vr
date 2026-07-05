@@ -135,13 +135,16 @@ function checkMora(prestamos, gracia, h = hoy()) {
 function calcularCapital(cfg, fuentesExternas, prestamos) {
   const base = cfg.capitalBase || 0;
   const ganancias = cfg.ganancias || 0;
-  const capitalPropio = base + ganancias;
+  const activos = prestamos.filter((p) => p.estado !== 'pagado');
+  // Todo crédito que no esté fondeado por un tercero sale de capital propio.
+  const saldoPropioEnCalle = activos.filter((p) => !p.fuenteExternaId).reduce((a, p) => a + p.saldo, 0);
+  const capitalPropio = base + ganancias + saldoPropioEnCalle;
   const capitalExterno = fuentesExternas.filter((f) => f.estado === 'activo').reduce((a, f) => a + f.saldo, 0);
   const capitalTotal = capitalPropio + capitalExterno;
-  const saldoActivo = prestamos.filter((p) => p.estado !== 'pagado').reduce((a, p) => a + p.saldo, 0);
-  // Se permite negativo a propósito: si se presta más de lo que hay cargado como
-  // capital, el Dashboard debe poder avisarlo en vez de esconderlo en $0.
-  const capitalDisponible = capitalTotal - saldoActivo;
+  const saldoActivo = activos.reduce((a, p) => a + p.saldo, 0);
+  // A diferencia de las demás cifras, esta no se calcula: la establece el usuario
+  // directamente (Configuración > Parámetros) y si no la define queda en 0.
+  const capitalDisponible = cfg.capitalDisponible || 0;
   return { base, ganancias, capitalPropio, capitalExterno, capitalTotal, capitalDisponible, saldoActivo };
 }
 

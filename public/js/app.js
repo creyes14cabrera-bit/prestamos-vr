@@ -506,7 +506,53 @@ async function bootstrap() {
 }
 
 // ==================== EXPORTACIÓN / IMPORTACIÓN (stubs, igual que en el original) ====================
-function exportToExcel() { Swal.fire('Info', 'Exportar Excel: función disponible', 'info'); }
+function exportToExcel() {
+  if (typeof XLSX === 'undefined') return Swal.fire('Error', 'Librería Excel no disponible', 'error');
+  const wb = XLSX.utils.book_new();
+
+  const clientesData = S.clientes.map(c => ({
+    ID: c.id, Nombre: c.nombre, Cédula: c.cedula, Teléfono: c.telefono,
+    Email: c.email, Dirección: c.direccion, Empresa: c.empresa,
+    Ingresos: c.ingresos, Estado: c.estado, FechaRegistro: c.fechaReg
+  }));
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(clientesData), 'Clientes');
+
+  const prestamosData = S.prestamos.map(p => ({
+    ID: p.id, ClienteID: p.clienteId, Cliente: p.clienteNombre, Monto: p.monto, Saldo: p.saldo,
+    InteresesPendientes: p.interesesPendientes || 0, Interes: p.interes, Frecuencia: p.frecuencia,
+    Tipo: p.tipo, FechaInicio: p.fechaInicio, Estado: p.estado, AbonoCapital: p.abonoCapital || 0,
+    FuenteExternaId: p.fuenteExternaId || '', GananciaNetaAcumulada: p.gananciaNetaAcumulada || 0,
+    Notas: p.notas, Garantias: (p.garantias || []).join(',')
+  }));
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(prestamosData), 'Prestamos');
+
+  const pagosData = S.pagos.map(pg => ({
+    ID: pg.id, PrestamoID: pg.prestamoId, Cliente: pg.clienteNombre,
+    Cuota: pg.numCuota, Monto: pg.monto, Capital: pg.capital, Intereses: pg.intereses,
+    IntPendienteAntes: pg.intPendienteAntes || 0, IntPendienteQuedo: pg.intPendienteQuedo || 0,
+    FechaPago: pg.fechaPago, Metodo: pg.metodo, Referencia: pg.referencia, TipoPago: pg.tipoPago
+  }));
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(pagosData), 'Pagos');
+
+  const fuentesData = S.fuentesExternas.map(f => ({
+    ID: f.id, Prestamista: f.prestamista, Monto: f.monto, TasaInteres: f.tasaInteres,
+    Frecuencia: f.frecuencia, FechaInicio: f.fechaInicio, Estado: f.estado,
+    Saldo: f.saldo, InteresesPagados: f.interesesPagados || 0, Notas: f.notas
+  }));
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(fuentesData), 'Fondeo');
+
+  const auditoriaData = S.auditoria.map(a => ({ Fecha: a.fecha, Accion: a.accion, Detalle: a.detalle, Tipo: a.tipo }));
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(auditoriaData), 'Auditoria');
+
+  const configData = [{
+    CapitalBase: S.cfg.capitalBase, CapitalDisponible: S.cfg.capitalDisponible, Ganancias: S.cfg.ganancias,
+    InteresDefault: S.cfg.interes, DiasGracia: S.cfg.gracia, MontoMinimo: S.cfg.minimo,
+    TasaMoratoria: S.cfg.moratoria, FrecuenciaDefault: S.cfg.frec
+  }];
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(configData), 'Configuracion');
+
+  XLSX.writeFile(wb, `Prestamos_VR_${hoy()}.xlsx`);
+}
 function abrirCapital() { id('cap-val').value = S.cfg.capitalBase || ''; openM('m-capital'); }
 
 // ==================== MENÚS ====================
